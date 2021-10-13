@@ -1,28 +1,15 @@
-import { gql, ApolloServer } from "apollo-server-lambda";
-import { getConfig } from "./types/config"
-
-const typeDefs = gql`
-  type Config {
-    apiBaseURL: String
-    stage: String
-    isLocal: Boolean
-  }
-
-  type Query {
-    config: Config
-  }
-`;
-
-const resolvers = {
-  Query: {
-    config: () => getConfig()
-  },
-  
-};
+import { ApolloServer } from 'apollo-server-lambda';
+import typeDefs from './typeDefs';
+import resolvers from './resolvers';
+import UsersAPI from './datasources/users';
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  dataSources: () => ({
+    usersAPI: new UsersAPI(),
+  }),
 });
 
+// eslint-disable-next-line import/prefer-default-export
 export const handler = server.createHandler();

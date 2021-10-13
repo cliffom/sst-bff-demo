@@ -1,11 +1,12 @@
-import ApolloStack from "./ApolloStack";
-import APIStack from "./APIStack";
-import * as sst from "@serverless-stack/resources";
+import * as sst from '@serverless-stack/resources';
+import ApolloStack from './ApolloStack';
+import APIStack from './APIStack';
 
 export default function main(app: sst.App): void {
   // Create the API stack where all services are defined
-  const apiStack = new APIStack(app, "api-stack");
+  const apiStack = new APIStack(app, 'api-stack');
 
   // Create the Apollo stack where the Apollo Server is defined
-  new ApolloStack(app, "apollo-stack", { api: apiStack.api });  
+  /* eslint-disable no-new */
+  new ApolloStack(app, 'apollo-stack', { api: apiStack.api });
 }

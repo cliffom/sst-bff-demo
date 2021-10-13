@@ -7,11 +7,18 @@
     "start": "sst start",
     "build": "sst build",
     "deploy": "sst deploy",
-    "remove": "sst remove"
+    "lint": "yarn run eslint stacks/ src/handlers/apollo"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.126.0",
-    "@types/aws-lambda": "^8.10.70"
+    "@types/aws-lambda": "^8.10.70",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-airbnb-typescript": "^14.0.1",
+    "eslint-plugin-import": "^2.25.2"
   },
   "dependencies": {
     "@aws-cdk/core": "1.126.0",
