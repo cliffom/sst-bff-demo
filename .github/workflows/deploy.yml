@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -14,4 +14,4 @@ jobs:
     - name: Install Dependencies
       run: yarn install
     - name: Deploy
-      run: npx sst deploy --stage prod
+      run: npx sst deploy --stage dev
