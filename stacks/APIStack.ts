@@ -1,6 +1,8 @@
 import * as sst from "@serverless-stack/resources";
 
 export default class APIStack extends sst.Stack {
+  public readonly api: sst.Api;
+  
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
     super(scope, id, props);
 
@@ -13,15 +15,15 @@ export default class APIStack extends sst.Stack {
     })
   
     // Create a HTTP API
-    const api = new sst.Api(this, "Api", {
-    routes: {
-        "GET /test": testHandler,
-    }
+    this.api = new sst.Api(this, "Api", {
+      routes: {
+          "GET /test": testHandler,
+      }
     });
 
     // Show the endpoint in the output
     this.addOutputs({
-    "ApiEndpoint": api.url,
+    "ApiEndpoint": this.api.url,
     });
   }
 }

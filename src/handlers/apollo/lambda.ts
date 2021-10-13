@@ -1,15 +1,23 @@
 import { gql, ApolloServer } from "apollo-server-lambda";
+import { getConfig } from "./types/config"
 
 const typeDefs = gql`
+  type Config {
+    apiBaseURL: String
+    stage: String
+    isLocal: Boolean
+  }
+
   type Query {
-    hello: String
+    config: Config
   }
 `;
 
 const resolvers = {
   Query: {
-    hello: () => "Hello, World!",
+    config: () => getConfig()
   },
+  
 };
 
 const server = new ApolloServer({
