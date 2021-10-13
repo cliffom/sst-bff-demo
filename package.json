@@ -17,6 +17,7 @@
     "@aws-cdk/core": "1.126.0",
     "@serverless-stack/cli": "0.46.0",
     "@serverless-stack/resources": "0.46.0",
+    "apollo-datasource-rest": "^3.3.0",
     "apollo-server-lambda": "^3.4.0"
   }
 }
