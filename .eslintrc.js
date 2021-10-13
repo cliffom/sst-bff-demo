@@ -16,5 +16,5 @@ module.exports = {
     "prettier/prettier": ["error"]
   },
   settings: {},
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: ['.eslintrc.js', 'test'],
 };
