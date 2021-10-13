@@ -14,11 +14,11 @@ const typeDefs = gql`
   }
 
   type Query {
-    config: Config
+    Config: Config
   }
 
   type Query {
-    allUsers: User
+    User: User
   }
 `;
 

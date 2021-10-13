@@ -3,8 +3,8 @@ import { UserContext, User } from './datasources/users';
 
 const resolvers = {
   Query: {
-    config: (): Config => getConfig(),
-    allUsers: async (
+    Config: (): Config => getConfig(),
+    User: async (
       _: unknown,
       __: unknown,
       { dataSources }: UserContext,
