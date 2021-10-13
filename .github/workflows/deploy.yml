@@ -11,5 +11,7 @@ jobs:
     environment: dev
     steps:
     - uses: actions/checkout@v2
+    - name: Install Dependencies
+      run: yarn install
     - name: Deploy
       run: npx sst deploy --stage prod
