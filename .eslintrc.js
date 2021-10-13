@@ -12,7 +12,9 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   plugins: ['@typescript-eslint', 'prettier'],
-  rules: {},
+  rules: {
+    "prettier/prettier": ["error"]
+  },
   settings: {},
   ignorePatterns: ['.eslintrc.js'],
 };
