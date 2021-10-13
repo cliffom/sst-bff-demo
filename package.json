@@ -1,6 +1,7 @@
 {
   "name": "sst-bff-demo",
   "version": "0.1.0",
+  "prettier": "prettier-airbnb-config",
   "private": true,
   "scripts": {
     "test": "sst test",
@@ -21,7 +22,8 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^4.0.0",
-    "prettier": "2.4.1"
+    "prettier": "2.4.1",
+    "prettier-airbnb-config": "^1.0.0"
   },
   "dependencies": {
     "@aws-cdk/core": "1.126.0",
