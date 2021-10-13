@@ -14,4 +14,4 @@ function getConfig(): Config {
   return newConfig;
 }
 
-export { Config, getConfig };
+export {Config, getConfig};
