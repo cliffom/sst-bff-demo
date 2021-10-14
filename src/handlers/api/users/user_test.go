@@ -1,16 +1,19 @@
 package main
 
 import (
+	"math/rand"
 	"testing"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
+	"github.com/brianvoe/gofakeit/v6"
 	"github.com/stretchr/testify/assert"
 )
 
 type mockDynamoDBClient struct {
 	dynamodbiface.DynamoDBAPI
+	fakerSeed int64
 }
 
 func (m *mockDynamoDBClient) PutItem(*dynamodb.PutItemInput) (*dynamodb.PutItemOutput, error) {
@@ -18,13 +21,14 @@ func (m *mockDynamoDBClient) PutItem(*dynamodb.PutItemInput) (*dynamodb.PutItemO
 }
 
 func (m *mockDynamoDBClient) GetItem(*dynamodb.GetItemInput) (*dynamodb.GetItemOutput, error) {
+	gofakeit.Seed(m.fakerSeed)
 	return &dynamodb.GetItemOutput{
 		ConsumedCapacity: &dynamodb.ConsumedCapacity{},
 		Item: map[string]*dynamodb.AttributeValue{
-			"id":        {S: aws.String("123")},
-			"firstName": {S: aws.String("Firstname")},
-			"lastName":  {S: aws.String("Lastname")},
-			"email":     {S: aws.String("email@address.com")},
+			"id":        {S: aws.String(gofakeit.LetterN(16))},
+			"firstName": {S: aws.String(gofakeit.FirstName())},
+			"lastName":  {S: aws.String(gofakeit.LastName())},
+			"email":     {S: aws.String(gofakeit.Email())},
 		},
 	}, nil
 }
@@ -32,9 +36,9 @@ func (m *mockDynamoDBClient) GetItem(*dynamodb.GetItemInput) (*dynamodb.GetItemO
 func TestCreateUser(t *testing.T) {
 	mockSvc := &mockDynamoDBClient{}
 	u := &User{
-		FirstName: "Firstname",
-		LastName:  "Lastname",
-		Email:     "email@address.com",
+		FirstName: gofakeit.FirstName(),
+		LastName:  gofakeit.LastName(),
+		Email:     gofakeit.Email(),
 	}
 	err := CreateUser(mockSvc, u)
 
@@ -43,14 +47,21 @@ func TestCreateUser(t *testing.T) {
 }
 
 func TestGetUserByID(t *testing.T) {
-	mockSvc := &mockDynamoDBClient{}
-	mockUser := &User{
-		ID:        "123",
-		FirstName: "Firstname",
-		LastName:  "Lastname",
-		Email:     "email@address.com",
+	seed := rand.Int63n(100)
+	gofakeit.Seed(seed)
+
+	userID := gofakeit.LetterN(16)
+	mockSvc := &mockDynamoDBClient{
+		fakerSeed: seed,
 	}
-	u, err := GetUserByID(mockSvc, "123")
+
+	mockUser := &User{
+		ID:        userID,
+		FirstName: gofakeit.FirstName(),
+		LastName:  gofakeit.LastName(),
+		Email:     gofakeit.Email(),
+	}
+	u, err := GetUserByID(mockSvc, userID)
 
 	assert.NoError(t, err)
 	assert.Equal(t, u, mockUser)
