@@ -7,6 +7,14 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/google/uuid"
+)
+
+type (
+	userCreatePayload struct {
+		FirstName string `json:"firstName"`
+		LastName  string `json:"lastName"`
+	}
 )
 
 // Handler is the main function that handles the request
@@ -22,12 +30,15 @@ func Handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.AP
 
 		return response(http.StatusOK, string(u)), nil
 
-	case http.MethodPost:
-		var user User
-		if err := json.Unmarshal([]byte(req.Body), &user); err != nil {
+	case http.MethodPut:
+		var userToCreate userCreatePayload
+		if err := json.Unmarshal([]byte(req.Body), &userToCreate); err != nil {
 			return response(http.StatusInternalServerError, ""), err
 		}
-		return response(http.StatusCreated, req.Body), nil
+
+		user, _ := createUser(userToCreate)
+		u, _ := json.Marshal(user)
+		return response(http.StatusCreated, string(u)), nil
 	}
 
 	return response(http.StatusMethodNotAllowed, ""), nil
@@ -55,7 +66,13 @@ func response(statusCode int, body string) events.APIGatewayProxyResponse {
 	}
 }
 
-func createUser(u *User) (*User, error) {
+func createUser(userToCreate userCreatePayload) (*User, error) {
+	u := &User{
+		ID:        uuid.New().String(),
+		FirstName: userToCreate.FirstName,
+		LastName:  userToCreate.LastName,
+	}
+
 	return u, nil
 }
 

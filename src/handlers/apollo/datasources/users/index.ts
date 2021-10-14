@@ -10,7 +10,7 @@ export interface UserContext {
 }
 
 export interface User {
-  id: string;
+  id?: string;
   firstName: string;
   lastName: string;
 }
@@ -24,5 +24,9 @@ export default class UsersAPI extends RESTDataSource {
 
   async getUser(): Promise<User> {
     return this.get('user');
+  }
+
+  async newUser(user: User): Promise<User> {
+    return this.put('user', user);
   }
 }

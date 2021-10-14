@@ -18,10 +18,6 @@ export default class APIStack extends sst.Stack {
       primaryIndex: {partitionKey: 'PK', sortKey: 'SK'},
     });
 
-    const testHandler = new sst.Function(this, 'testHandler', {
-      handler: 'src/handlers/api/test',
-    });
-
     const usersHandler = new sst.Function(this, 'usersHandler', {
       handler: 'src/handlers/api/users',
       environment: {
@@ -32,9 +28,8 @@ export default class APIStack extends sst.Stack {
     // Create a HTTP API
     this.api = new sst.Api(this, 'Api', {
       routes: {
-        'GET /test': testHandler,
-        'GET /user': usersHandler,
-        'POST /user': usersHandler,
+        'GET /test': 'src/handlers/api/test',
+        'ANY /user': usersHandler,
       },
     });
 

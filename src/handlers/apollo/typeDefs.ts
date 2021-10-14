@@ -9,8 +9,8 @@ const typeDefs = gql`
 
   type User {
     id: String
-    first_name: String
-    last_name: String
+    firstName: String
+    lastName: String
   }
 
   type Query {
@@ -19,6 +19,10 @@ const typeDefs = gql`
 
   type Query {
     User: User
+  }
+
+  type Mutation {
+    NewUser(firstName: String, lastName: String): User
   }
 `;
 
