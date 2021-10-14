@@ -7,6 +7,16 @@ const resolvers = {
     User: async (_: unknown, __: unknown, {dataSources}: UserContext): Promise<User> =>
       dataSources.usersAPI.getUser(),
   },
+  Mutation: {
+    NewUser: async (
+      _: unknown,
+      {firstName, lastName}: User,
+      {dataSources}: UserContext
+    ): Promise<User> => {
+      const user = {firstName, lastName};
+      return dataSources.usersAPI.newUser(user);
+    },
+  },
 };
 
 export default resolvers;

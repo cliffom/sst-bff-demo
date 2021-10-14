@@ -10,16 +10,29 @@ export default class APIStack extends sst.Stack {
       runtime: 'go1.x',
     });
 
-    const testHandler = new sst.Function(this, 'testHandler', {
-      handler: 'src/handlers/api/test',
+    const table = new sst.Table(this, 'Storage', {
+      fields: {
+        PK: sst.TableFieldType.STRING,
+        SK: sst.TableFieldType.STRING,
+      },
+      primaryIndex: {partitionKey: 'PK', sortKey: 'SK'},
+    });
+
+    const usersHandler = new sst.Function(this, 'usersHandler', {
+      handler: 'src/handlers/api/users',
+      environment: {
+        TABLE_NAME: table.dynamodbTable.tableName,
+      },
     });
 
     // Create a HTTP API
     this.api = new sst.Api(this, 'Api', {
       routes: {
-        'GET /test': testHandler,
-        'GET /user': 'src/handlers/api/user',
+        'GET /test': 'src/handlers/api/test',
+        'ANY /user': usersHandler,
       },
     });
+
+    this.api.attachPermissions([table]);
   }
 }
