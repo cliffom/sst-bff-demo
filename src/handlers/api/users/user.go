@@ -15,7 +15,7 @@ type (
 	userItem struct {
 		PK   string
 		SK   string
-		Type string
+		Type string `json:"type"`
 		User
 	}
 
