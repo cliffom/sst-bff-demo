@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
@@ -27,10 +26,7 @@ type (
 	}
 )
 
-func (u *User) Create() error {
-	session := session.Must(session.NewSession())
-	svc := dynamodb.New(session)
-
+func CreateUser(svc *dynamodb.DynamoDB, u *User) error {
 	h := md5.Sum([]byte(u.Email))
 	u.ID = hex.EncodeToString(h[:])
 
@@ -59,10 +55,7 @@ func (u *User) Create() error {
 	return nil
 }
 
-func GetUserByID(id string) (*User, error) {
-	session := session.Must(session.NewSession())
-	svc := dynamodb.New(session)
-
+func GetUserByID(svc *dynamodb.DynamoDB, id string) (*User, error) {
 	userID := "U:" + id
 
 	tableName := os.Getenv("TABLE_NAME")

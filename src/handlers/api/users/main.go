@@ -8,20 +8,25 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/dynamodb"
 )
 
 // Handler is the main function that handles the request
 func Handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayProxyResponse, error) {
+	session := session.Must(session.NewSession())
+	svc := dynamodb.New(session)
+
 	switch httpMethod := req.RequestContext.HTTP.Method; httpMethod {
 	case http.MethodGet:
-		return getUser(req.PathParameters["id"])
+		return getUser(svc, req.PathParameters["id"])
 
 	case http.MethodPut:
 		var user User
 		if err := json.Unmarshal([]byte(req.Body), &user); err != nil {
 			return response(http.StatusInternalServerError, ""), err
 		}
-		return createUser(user)
+		return createUser(svc, user)
 	}
 
 	return response(http.StatusMethodNotAllowed, ""), nil
@@ -37,8 +42,8 @@ func main() {
 	lambda.Start(handler)
 }
 
-func createUser(userToCreate User) (events.APIGatewayProxyResponse, error) {
-	if err := userToCreate.Create(); err != nil {
+func createUser(svc *dynamodb.DynamoDB, userToCreate User) (events.APIGatewayProxyResponse, error) {
+	if err := CreateUser(svc, &userToCreate); err != nil {
 		log.Printf("error: %v", err)
 	}
 
@@ -46,8 +51,8 @@ func createUser(userToCreate User) (events.APIGatewayProxyResponse, error) {
 	return response(http.StatusCreated, string(u)), nil
 }
 
-func getUser(id string) (events.APIGatewayProxyResponse, error) {
-	user, _ := GetUserByID(id)
+func getUser(svc *dynamodb.DynamoDB, id string) (events.APIGatewayProxyResponse, error) {
+	user, _ := GetUserByID(svc, id)
 	u, err := json.Marshal(user)
 	if err != nil {
 		return response(http.StatusInternalServerError, ""), err
