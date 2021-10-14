@@ -1,4 +1,4 @@
-# sst-bff-demo
+# sst-bff-demo [![lint](https://github.com/cliffom/sst-bff-demo/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/cliffom/sst-bff-demo/actions/workflows/lint.yml) [![deploy](https://github.com/cliffom/sst-bff-demo/actions/workflows/deploy.yml/badge.svg)](https://github.com/cliffom/sst-bff-demo/actions/workflows/deploy.yml)
 
 A demonstration of how to use SST to build and deploy a GraphQL endpoint with backing services
 written in Go.
