@@ -21,10 +21,5 @@ export default class APIStack extends sst.Stack {
         'GET /user': 'src/handlers/api/user',
       },
     });
-
-    // Show the endpoint in the output
-    this.addOutputs({
-      ApiEndpoint: this.api.url,
-    });
   }
 }

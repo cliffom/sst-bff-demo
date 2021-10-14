@@ -25,7 +25,7 @@ export default class ApolloStack extends sst.Stack {
 
     // Show the API endpoint in output
     this.addOutputs({
-      ApiEndpoint: apollo.url,
+      ApolloEndpoint: apollo.url,
     });
   }
 }
