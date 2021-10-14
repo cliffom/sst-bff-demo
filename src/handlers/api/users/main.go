@@ -10,35 +10,18 @@ import (
 	"github.com/google/uuid"
 )
 
-type (
-	userCreatePayload struct {
-		FirstName string `json:"firstName"`
-		LastName  string `json:"lastName"`
-	}
-)
-
 // Handler is the main function that handles the request
 func Handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayProxyResponse, error) {
-
 	switch httpMethod := req.RequestContext.HTTP.Method; httpMethod {
 	case http.MethodGet:
-		user, _ := getUser()
-		u, err := json.Marshal(user)
-		if err != nil {
-			return response(http.StatusInternalServerError, ""), err
-		}
-
-		return response(http.StatusOK, string(u)), nil
+		return getUser()
 
 	case http.MethodPut:
-		var userToCreate userCreatePayload
-		if err := json.Unmarshal([]byte(req.Body), &userToCreate); err != nil {
+		var user User
+		if err := json.Unmarshal([]byte(req.Body), &user); err != nil {
 			return response(http.StatusInternalServerError, ""), err
 		}
-
-		user, _ := createUser(userToCreate)
-		u, _ := json.Marshal(user)
-		return response(http.StatusCreated, string(u)), nil
+		return createUser(user)
 	}
 
 	return response(http.StatusMethodNotAllowed, ""), nil
@@ -54,6 +37,27 @@ func main() {
 	lambda.Start(handler)
 }
 
+func createUser(userToCreate User) (events.APIGatewayProxyResponse, error) {
+	user := &User{
+		ID:        uuid.New().String(),
+		FirstName: userToCreate.FirstName,
+		LastName:  userToCreate.LastName,
+	}
+	u, _ := json.Marshal(user)
+
+	return response(http.StatusCreated, string(u)), nil
+}
+
+func getUser() (events.APIGatewayProxyResponse, error) {
+	user := &User{ID: uuid.New().String(), FirstName: "Michael", LastName: "Clifford"}
+	u, err := json.Marshal(user)
+	if err != nil {
+		return response(http.StatusInternalServerError, ""), err
+	}
+
+	return response(http.StatusOK, string(u)), nil
+}
+
 func response(statusCode int, body string) events.APIGatewayProxyResponse {
 	return events.APIGatewayProxyResponse{
 		StatusCode: statusCode,
@@ -64,18 +68,4 @@ func response(statusCode int, body string) events.APIGatewayProxyResponse {
 		Body:              body,
 		IsBase64Encoded:   false,
 	}
-}
-
-func createUser(userToCreate userCreatePayload) (*User, error) {
-	u := &User{
-		ID:        uuid.New().String(),
-		FirstName: userToCreate.FirstName,
-		LastName:  userToCreate.LastName,
-	}
-
-	return u, nil
-}
-
-func getUser() (*User, error) {
-	return &User{ID: "1", FirstName: "Michael", LastName: "Clifford"}, nil
 }
