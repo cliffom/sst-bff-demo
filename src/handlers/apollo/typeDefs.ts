@@ -9,6 +9,7 @@ const typeDefs = gql`
 
   type User {
     id: String
+    email: String
     firstName: String
     lastName: String
   }
@@ -22,7 +23,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    NewUser(firstName: String, lastName: String): User
+    NewUser(email: String, firstName: String, lastName: String): User
   }
 `;
 

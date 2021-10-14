@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -38,13 +39,11 @@ func main() {
 }
 
 func createUser(userToCreate User) (events.APIGatewayProxyResponse, error) {
-	user := &User{
-		ID:        uuid.New().String(),
-		FirstName: userToCreate.FirstName,
-		LastName:  userToCreate.LastName,
+	if err := userToCreate.Create(); err != nil {
+		log.Printf("error: %v", err)
 	}
-	u, _ := json.Marshal(user)
 
+	u, _ := json.Marshal(userToCreate)
 	return response(http.StatusCreated, string(u)), nil
 }
 

@@ -10,10 +10,10 @@ const resolvers = {
   Mutation: {
     NewUser: async (
       _: unknown,
-      {firstName, lastName}: User,
+      {email, firstName, lastName}: User,
       {dataSources}: UserContext
     ): Promise<User> => {
-      const user = {firstName, lastName};
+      const user = {email, firstName, lastName};
       return dataSources.usersAPI.newUser(user);
     },
   },
