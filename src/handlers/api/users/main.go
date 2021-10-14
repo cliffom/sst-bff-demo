@@ -15,18 +15,18 @@ import (
 // Handler is the main function that handles the request
 func Handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayProxyResponse, error) {
 	session := session.Must(session.NewSession())
-	svc := dynamodb.New(session)
+	dbSvc := dynamodb.New(session)
 
 	switch httpMethod := req.RequestContext.HTTP.Method; httpMethod {
 	case http.MethodGet:
-		return getUser(svc, req.PathParameters["id"])
+		return getUser(dbSvc, req.PathParameters["id"])
 
 	case http.MethodPut:
 		var user User
 		if err := json.Unmarshal([]byte(req.Body), &user); err != nil {
 			return response(http.StatusInternalServerError, ""), err
 		}
-		return createUser(svc, user)
+		return createUser(dbSvc, user)
 	}
 
 	return response(http.StatusMethodNotAllowed, ""), nil
@@ -42,8 +42,8 @@ func main() {
 	lambda.Start(handler)
 }
 
-func createUser(svc *dynamodb.DynamoDB, userToCreate User) (events.APIGatewayProxyResponse, error) {
-	if err := CreateUser(svc, &userToCreate); err != nil {
+func createUser(dbSvc *dynamodb.DynamoDB, userToCreate User) (events.APIGatewayProxyResponse, error) {
+	if err := CreateUser(dbSvc, &userToCreate); err != nil {
 		log.Printf("error: %v", err)
 	}
 
@@ -51,8 +51,8 @@ func createUser(svc *dynamodb.DynamoDB, userToCreate User) (events.APIGatewayPro
 	return response(http.StatusCreated, string(u)), nil
 }
 
-func getUser(svc *dynamodb.DynamoDB, id string) (events.APIGatewayProxyResponse, error) {
-	user, _ := GetUserByID(svc, id)
+func getUser(dbSvc *dynamodb.DynamoDB, id string) (events.APIGatewayProxyResponse, error) {
+	user, _ := GetUserByID(dbSvc, id)
 	u, err := json.Marshal(user)
 	if err != nil {
 		return response(http.StatusInternalServerError, ""), err

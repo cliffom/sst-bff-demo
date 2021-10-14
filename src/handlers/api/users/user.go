@@ -26,7 +26,7 @@ type (
 	}
 )
 
-func CreateUser(svc *dynamodb.DynamoDB, u *User) error {
+func CreateUser(dbSvc *dynamodb.DynamoDB, u *User) error {
 	h := md5.Sum([]byte(u.Email))
 	u.ID = hex.EncodeToString(h[:])
 
@@ -47,7 +47,7 @@ func CreateUser(svc *dynamodb.DynamoDB, u *User) error {
 		Item:      av,
 		TableName: aws.String(tableName),
 	}
-	_, err = svc.PutItem(input)
+	_, err = dbSvc.PutItem(input)
 	if err != nil {
 		return err
 	}
@@ -55,11 +55,11 @@ func CreateUser(svc *dynamodb.DynamoDB, u *User) error {
 	return nil
 }
 
-func GetUserByID(svc *dynamodb.DynamoDB, id string) (*User, error) {
+func GetUserByID(dbSvc *dynamodb.DynamoDB, id string) (*User, error) {
 	userID := "U:" + id
 
 	tableName := os.Getenv("TABLE_NAME")
-	result, err := svc.GetItem(&dynamodb.GetItemInput{
+	result, err := dbSvc.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(tableName),
 		Key: map[string]*dynamodb.AttributeValue{
 			"PK": {
