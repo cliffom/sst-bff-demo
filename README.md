@@ -12,6 +12,29 @@ Start by installing the dependencies.
 $ yarn install
 ```
 
+### What this is
+
+A sample application demonstrating how to build different services deployed as
+Lambda functions.
+
+Here we build and deploy 3 Lambda functions:
+- One Lambda function with the NodeJS runtime for Apollo Server (Apollo Stack)
+- One Lambda function with the Go runtime for user services (API Stack)
+- One Lambda function with the Go runtime as a test route (API Stack)
+
+Though the API Gateways fronting Apollo Server and API stacks are accessible
+individually, here we are demonstrating using the RESTful API stack as a
+datasource for the Apollo Server.
+
+To demonstrate connection to a DynamoDB table from the RESTful services, a
+DynamoDB table is created and accessible by the API stack.
+
+Example Request Path:
+
+```
+User->API Gateway->Apollo Stack->API Gateway->API Stack
+```
+
 ## Commands
 
 ### `yarn run start`
