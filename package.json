@@ -4,7 +4,7 @@
   "prettier": "prettier-airbnb-config",
   "private": true,
   "scripts": {
-    "test": "sst test",
+    "test": "sst test && make test",
     "start": "sst start",
     "build": "sst build",
     "deploy": "sst deploy",

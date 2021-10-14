@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
+	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 )
 
 type (
@@ -26,7 +27,7 @@ type (
 	}
 )
 
-func CreateUser(dbSvc *dynamodb.DynamoDB, u *User) error {
+func CreateUser(dbSvc dynamodbiface.DynamoDBAPI, u *User) error {
 	h := md5.Sum([]byte(u.Email))
 	u.ID = hex.EncodeToString(h[:])
 
@@ -55,7 +56,7 @@ func CreateUser(dbSvc *dynamodb.DynamoDB, u *User) error {
 	return nil
 }
 
-func GetUserByID(dbSvc *dynamodb.DynamoDB, id string) (*User, error) {
+func GetUserByID(dbSvc dynamodbiface.DynamoDBAPI, id string) (*User, error) {
 	userID := "U:" + id
 
 	tableName := os.Getenv("TABLE_NAME")
