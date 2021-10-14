@@ -9,7 +9,7 @@ export default class ApolloStack extends sst.Stack {
     super(scope, id, props);
 
     this.setDefaultFunctionProps({
-      runtime: 'nodejs12.x',
+      runtime: 'nodejs14.x',
     });
 
     // Create the Apollo GraphQL API
