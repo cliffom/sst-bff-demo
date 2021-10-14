@@ -29,7 +29,8 @@ export default class APIStack extends sst.Stack {
     this.api = new sst.Api(this, 'Api', {
       routes: {
         'GET /test': 'src/handlers/api/test',
-        'ANY /user': usersHandler,
+        'PUT /user': usersHandler,
+        'GET /user/{id}': usersHandler,
       },
     });
 

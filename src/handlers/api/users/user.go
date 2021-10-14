@@ -12,7 +12,7 @@ import (
 )
 
 type (
-	UserItem struct {
+	userItem struct {
 		PK string
 		SK string
 		User
@@ -33,7 +33,7 @@ func (u *User) Create() error {
 	h := md5.Sum([]byte(u.Email))
 	u.ID = hex.EncodeToString(h[:])
 
-	item := UserItem{
+	item := userItem{
 		PK:   "U:" + u.ID,
 		SK:   "U:" + u.ID,
 		User: *u,
@@ -55,4 +55,39 @@ func (u *User) Create() error {
 	}
 
 	return nil
+}
+
+func GetUserByID(id string) (*User, error) {
+	session := session.Must(session.NewSession())
+	svc := dynamodb.New(session)
+
+	userID := "U:" + id
+
+	tableName := os.Getenv("TABLE_NAME")
+	result, err := svc.GetItem(&dynamodb.GetItemInput{
+		TableName: aws.String(tableName),
+		Key: map[string]*dynamodb.AttributeValue{
+			"PK": {
+				S: aws.String(userID),
+			},
+			"SK": {
+				S: aws.String(userID),
+			},
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	if result.Item == nil {
+		return nil, nil
+	}
+
+	user := &User{}
+	err = dynamodbattribute.UnmarshalMap(result.Item, &user)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }

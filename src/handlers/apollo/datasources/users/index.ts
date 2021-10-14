@@ -23,8 +23,8 @@ export default class UsersAPI extends RESTDataSource {
     this.baseURL = getConfig().apiBaseURL;
   }
 
-  async getUser(): Promise<User> {
-    return this.get('user');
+  async getUser(id: string): Promise<User> {
+    return this.get(`user/${encodeURIComponent(id)}`);
   }
 
   async newUser(user: User): Promise<User> {

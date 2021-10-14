@@ -8,14 +8,13 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/google/uuid"
 )
 
 // Handler is the main function that handles the request
 func Handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayProxyResponse, error) {
 	switch httpMethod := req.RequestContext.HTTP.Method; httpMethod {
 	case http.MethodGet:
-		return getUser()
+		return getUser(req.PathParameters["id"])
 
 	case http.MethodPut:
 		var user User
@@ -47,8 +46,8 @@ func createUser(userToCreate User) (events.APIGatewayProxyResponse, error) {
 	return response(http.StatusCreated, string(u)), nil
 }
 
-func getUser() (events.APIGatewayProxyResponse, error) {
-	user := &User{ID: uuid.New().String(), FirstName: "Michael", LastName: "Clifford"}
+func getUser(id string) (events.APIGatewayProxyResponse, error) {
+	user, _ := GetUserByID(id)
 	u, err := json.Marshal(user)
 	if err != nil {
 		return response(http.StatusInternalServerError, ""), err
