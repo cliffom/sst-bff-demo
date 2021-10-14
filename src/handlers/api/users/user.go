@@ -13,8 +13,9 @@ import (
 
 type (
 	userItem struct {
-		PK string
-		SK string
+		PK   string
+		SK   string
+		Type string
 		User
 	}
 
@@ -36,6 +37,7 @@ func (u *User) Create() error {
 	item := userItem{
 		PK:   "U:" + u.ID,
 		SK:   "U:" + u.ID,
+		Type: "USER",
 		User: *u,
 	}
 
