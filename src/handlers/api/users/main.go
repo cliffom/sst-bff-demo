@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"log"
 	"net/http"
 
@@ -17,15 +18,23 @@ func Handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.AP
 	session := session.Must(session.NewSession())
 	dbSvc := dynamodb.New(session)
 
+	userID, err := getUserIDFromRequest(req)
+	if err != nil {
+		// we should never enter this conditional as auth is handled at the APIG
+		// but we do this just in case.
+		return response(http.StatusUnauthorized, ""), err
+	}
+
 	switch httpMethod := req.RequestContext.HTTP.Method; httpMethod {
 	case http.MethodGet:
-		return getUser(dbSvc, req.PathParameters["id"])
+		return getUser(dbSvc, *userID)
 
 	case http.MethodPut:
 		var user User
 		if err := json.Unmarshal([]byte(req.Body), &user); err != nil {
 			return response(http.StatusInternalServerError, ""), err
 		}
+		user.ID = *userID
 		return createUser(dbSvc, user)
 	}
 
@@ -49,6 +58,15 @@ func createUser(dbSvc *dynamodb.DynamoDB, userToCreate User) (events.APIGatewayP
 
 	u, _ := json.Marshal(userToCreate)
 	return response(http.StatusCreated, string(u)), nil
+}
+
+func getUserIDFromRequest(req events.APIGatewayV2HTTPRequest) (*string, error) {
+	id, ok := req.RequestContext.Authorizer.JWT.Claims["sub"]
+	if !ok {
+		return nil, errors.New("could not get userID from JWT claims")
+	}
+
+	return &id, nil
 }
 
 func getUser(dbSvc *dynamodb.DynamoDB, id string) (events.APIGatewayProxyResponse, error) {

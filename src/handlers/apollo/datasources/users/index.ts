@@ -27,8 +27,8 @@ export default class UsersAPI extends RESTDataSource {
     request.headers.set('Authorization', this.context.headers.authorization);
   }
 
-  async getUser(id: string): Promise<User> {
-    return this.get(`user/${encodeURIComponent(id)}`);
+  async getUser(): Promise<User> {
+    return this.get(`user/me`);
   }
 
   async newUser(user: User): Promise<User> {
