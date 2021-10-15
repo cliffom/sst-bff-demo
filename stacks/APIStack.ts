@@ -8,6 +8,7 @@ export default class APIStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
     super(scope, id, props);
 
+    // Let's Go!
     this.setDefaultFunctionProps({
       runtime: 'go1.x',
     });
@@ -25,6 +26,7 @@ export default class APIStack extends sst.Stack {
       authFlows: {userPassword: true},
     });
 
+    // Create DynamoDB Table
     const table = new sst.Table(this, 'Storage', {
       fields: {
         PK: sst.TableFieldType.STRING,
@@ -33,6 +35,7 @@ export default class APIStack extends sst.Stack {
       primaryIndex: {partitionKey: 'PK', sortKey: 'SK'},
     });
 
+    // Create fat lambda for Users domain
     const usersHandler = new sst.Function(this, 'usersHandler', {
       handler: 'src/handlers/api/users',
       environment: {
@@ -53,7 +56,7 @@ export default class APIStack extends sst.Stack {
           authorizationType: sst.ApiAuthorizationType.NONE,
         },
         'PUT /user': usersHandler,
-        'GET /user/{id}': usersHandler,
+        'GET /user/me': usersHandler,
       },
     });
 
