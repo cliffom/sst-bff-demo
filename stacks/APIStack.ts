@@ -1,6 +1,7 @@
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as apigAuthorizers from '@aws-cdk/aws-apigatewayv2-authorizers';
 import * as sst from '@serverless-stack/resources';
+import {createTestHandler, createUsersHandler} from './functions/api';
 
 export default class APIStack extends sst.Stack {
   public readonly api: sst.Api;
@@ -35,13 +36,9 @@ export default class APIStack extends sst.Stack {
       primaryIndex: {partitionKey: 'PK', sortKey: 'SK'},
     });
 
-    // Create fat lambda for Users domain
-    const usersHandler = new sst.Function(this, 'usersHandler', {
-      handler: 'src/handlers/api/users',
-      environment: {
-        TABLE_NAME: table.dynamodbTable.tableName,
-      },
-    });
+    // Create our route handlers
+    const usersHandler = createUsersHandler({scope: this, table});
+    const testHandler = createTestHandler({scope: this});
 
     // Create a HTTP API
     this.api = new sst.Api(this, 'Api', {
@@ -52,7 +49,7 @@ export default class APIStack extends sst.Stack {
       defaultAuthorizationType: sst.ApiAuthorizationType.JWT,
       routes: {
         'GET /test': {
-          function: 'src/handlers/api/test',
+          function: testHandler,
           authorizationType: sst.ApiAuthorizationType.NONE,
         },
         'PUT /user': usersHandler,
@@ -63,7 +60,6 @@ export default class APIStack extends sst.Stack {
     this.api.attachPermissions([table]);
 
     this.addOutputs({
-      ApiEndpoint: this.api.url,
       UserPoolId: userPool.userPoolId,
       UserPoolClientId: userPoolClient.userPoolClientId,
     });
