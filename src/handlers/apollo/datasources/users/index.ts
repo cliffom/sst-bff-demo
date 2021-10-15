@@ -31,7 +31,7 @@ export default class UsersAPI extends RESTDataSource {
     return this.get(`user/me`);
   }
 
-  async newUser(user: User): Promise<User> {
-    return this.put('user', user);
+  async newUser(): Promise<User> {
+    return this.put('user', {});
   }
 }

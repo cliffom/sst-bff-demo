@@ -8,8 +8,8 @@ const resolvers = {
       dataSources.usersAPI.getUser(),
   },
   Mutation: {
-    NewUser: async (_: unknown, user: User, {dataSources}: UserContext): Promise<User> =>
-      dataSources.usersAPI.newUser(user),
+    NewUser: async (_: unknown, __: unknown, {dataSources}: UserContext): Promise<User> =>
+      dataSources.usersAPI.newUser(),
   },
 };
 
