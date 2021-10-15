@@ -1,3 +1,4 @@
+import * as apigAuthorizers from '@aws-cdk/aws-apigatewayv2-authorizers';
 import * as sst from '@serverless-stack/resources';
 
 export default class APIStack extends sst.Stack {
@@ -27,8 +28,16 @@ export default class APIStack extends sst.Stack {
 
     // Create a HTTP API
     this.api = new sst.Api(this, 'Api', {
+      defaultAuthorizer: new apigAuthorizers.HttpJwtAuthorizer({
+        jwtAudience: [process.env.JWT_AUDIENCE as string],
+        jwtIssuer: process.env.JWT_ISSUER as string,
+      }),
+      defaultAuthorizationType: sst.ApiAuthorizationType.JWT,
       routes: {
-        'GET /test': 'src/handlers/api/test',
+        'GET /test': {
+          function: 'src/handlers/api/test',
+          authorizationType: sst.ApiAuthorizationType.NONE,
+        },
         'PUT /user': usersHandler,
         'GET /user/{id}': usersHandler,
       },
