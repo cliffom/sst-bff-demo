@@ -27,7 +27,7 @@ func Handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.AP
 
 	switch httpMethod := req.RequestContext.HTTP.Method; httpMethod {
 	case http.MethodGet:
-		return getUser(dbSvc, userFromJWT.ID)
+		return getUserByID(dbSvc, userFromJWT.ID)
 
 	case http.MethodPut:
 		if err := json.Unmarshal([]byte(req.Body), &userFromJWT); err != nil {
@@ -87,7 +87,7 @@ func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescr
 	}, nil
 }
 
-func getUser(dbSvc *dynamodb.DynamoDB, id string) (events.APIGatewayProxyResponse, error) {
+func getUserByID(dbSvc *dynamodb.DynamoDB, id string) (events.APIGatewayProxyResponse, error) {
 	user, _ := GetUserByID(dbSvc, id)
 	u, err := json.Marshal(user)
 	if err != nil {
