@@ -9,6 +9,9 @@ const server = new ApolloServer({
   dataSources: () => ({
     usersAPI: new UsersAPI(),
   }),
+  context: ({event}) => ({
+    headers: event.headers,
+  }),
 });
 
 // eslint-disable-next-line import/prefer-default-export

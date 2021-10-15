@@ -26,6 +26,11 @@ Though the API Gateways fronting Apollo Server and API stacks are accessible
 individually, here we are demonstrating using the RESTful API stack as a
 datasource for the Apollo Server.
 
+The routes exposed by the API Stack are protected with a Cognito Pool
+(created within the stack) and require a valid JWT token. The GraphQL
+route is open to the public but passes the authorization header to the
+API endpoints.
+
 To demonstrate connection to a DynamoDB table from the RESTful services, a
 DynamoDB table is created and accessible by the API stack.
 

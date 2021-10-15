@@ -1,8 +1,6 @@
 package main
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -24,13 +22,12 @@ type (
 		Email     string `json:"email"`
 		FirstName string `json:"firstName"`
 		LastName  string `json:"lastName"`
+		Created   string `json:"created"`
 	}
 )
 
 func CreateUser(dbSvc dynamodbiface.DynamoDBAPI, u *User) error {
-	h := md5.Sum([]byte(u.Email))
-	u.ID = hex.EncodeToString(h[:])
-
+	u.Created = NewTime().String()
 	item := userItem{
 		PK:   "U:" + u.ID,
 		SK:   "U:" + u.ID,

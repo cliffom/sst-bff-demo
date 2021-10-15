@@ -1,4 +1,4 @@
-import {RESTDataSource} from 'apollo-datasource-rest';
+import {RESTDataSource, RequestOptions} from 'apollo-datasource-rest';
 import {getConfig} from '../../config';
 
 export interface UserDataSources {
@@ -14,6 +14,7 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
+  created?: string;
 }
 
 export default class UsersAPI extends RESTDataSource {
@@ -23,11 +24,15 @@ export default class UsersAPI extends RESTDataSource {
     this.baseURL = getConfig().apiBaseURL;
   }
 
-  async getUser(id: string): Promise<User> {
-    return this.get(`user/${encodeURIComponent(id)}`);
+  protected willSendRequest?(request: RequestOptions): void {
+    request.headers.set('Authorization', this.context.headers.authorization);
   }
 
-  async newUser(user: User): Promise<User> {
-    return this.put('user', user);
+  async getUser(): Promise<User> {
+    return this.get(`user/me`);
+  }
+
+  async newUser(): Promise<User> {
+    return this.put('user', {});
   }
 }
