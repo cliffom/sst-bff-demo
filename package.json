@@ -26,6 +26,7 @@
     "prettier-airbnb-config": "^1.0.0"
   },
   "dependencies": {
+    "@aws-cdk/aws-apigatewayv2-authorizers": "1.126.0",
     "@aws-cdk/core": "1.126.0",
     "@serverless-stack/cli": "0.46.0",
     "@serverless-stack/resources": "0.46.0",
