@@ -12,6 +12,7 @@ const typeDefs = gql`
     email: String
     firstName: String
     lastName: String
+    created: String
   }
 
   type Query {

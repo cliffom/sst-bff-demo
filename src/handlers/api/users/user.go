@@ -22,10 +22,12 @@ type (
 		Email     string `json:"email"`
 		FirstName string `json:"firstName"`
 		LastName  string `json:"lastName"`
+		Created   string `json:"created"`
 	}
 )
 
 func CreateUser(dbSvc dynamodbiface.DynamoDBAPI, u *User) error {
+	u.Created = NewTime().String()
 	item := userItem{
 		PK:   "U:" + u.ID,
 		SK:   "U:" + u.ID,

@@ -14,6 +14,7 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
+  created?: string;
 }
 
 export default class UsersAPI extends RESTDataSource {
