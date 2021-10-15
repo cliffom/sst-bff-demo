@@ -1,3 +1,4 @@
+import * as cognito from '@aws-cdk/aws-cognito';
 import * as apigAuthorizers from '@aws-cdk/aws-apigatewayv2-authorizers';
 import * as sst from '@serverless-stack/resources';
 
@@ -9,6 +10,19 @@ export default class APIStack extends sst.Stack {
 
     this.setDefaultFunctionProps({
       runtime: 'go1.x',
+    });
+
+    // Create User Pool
+    const userPool = new cognito.UserPool(this, 'UserPool', {
+      selfSignUpEnabled: true,
+      signInAliases: {email: true},
+      signInCaseSensitive: false,
+    });
+
+    // Create User Pool Client
+    const userPoolClient = new cognito.UserPoolClient(this, 'UserPoolClient', {
+      userPool,
+      authFlows: {userPassword: true},
     });
 
     const table = new sst.Table(this, 'Storage', {
@@ -28,9 +42,9 @@ export default class APIStack extends sst.Stack {
 
     // Create a HTTP API
     this.api = new sst.Api(this, 'Api', {
-      defaultAuthorizer: new apigAuthorizers.HttpJwtAuthorizer({
-        jwtAudience: [process.env.JWT_AUDIENCE as string],
-        jwtIssuer: process.env.JWT_ISSUER as string,
+      defaultAuthorizer: new apigAuthorizers.HttpUserPoolAuthorizer({
+        userPool,
+        userPoolClient,
       }),
       defaultAuthorizationType: sst.ApiAuthorizationType.JWT,
       routes: {
@@ -44,5 +58,11 @@ export default class APIStack extends sst.Stack {
     });
 
     this.api.attachPermissions([table]);
+
+    this.addOutputs({
+      ApiEndpoint: this.api.url,
+      UserPoolId: userPool.userPoolId,
+      UserPoolClientId: userPoolClient.userPoolClientId,
+    });
   }
 }
