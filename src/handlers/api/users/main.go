@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -29,7 +28,7 @@ func Handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.AP
 	case http.MethodGet:
 		return getUserByID(dbSvc, userFromJWT.ID)
 
-	case http.MethodPut:
+	case http.MethodPost:
 		if err := json.Unmarshal([]byte(req.Body), &userFromJWT); err != nil {
 			return response(http.StatusInternalServerError, ""), err
 		}
@@ -51,7 +50,7 @@ func main() {
 
 func createUser(dbSvc *dynamodb.DynamoDB, userToCreate User) (events.APIGatewayProxyResponse, error) {
 	if err := CreateUser(dbSvc, &userToCreate); err != nil {
-		log.Printf("error: %v", err)
+		return response(http.StatusConflict, err.Error()), err
 	}
 
 	u, _ := json.Marshal(userToCreate)
