@@ -54,8 +54,8 @@ export default class APIStack extends sst.Stack {
           function: testHandler,
           authorizationType: sst.ApiAuthorizationType.NONE,
         },
-        'POST /user': usersHandler,
-        'GET /user/me': usersHandler,
+        'POST /users': usersHandler,
+        'GET /users/me': usersHandler,
       },
     });
 

@@ -50,7 +50,8 @@ func main() {
 
 func createUser(dbSvc *dynamodb.DynamoDB, userToCreate User) (events.APIGatewayProxyResponse, error) {
 	if err := CreateUser(dbSvc, &userToCreate); err != nil {
-		return response(http.StatusConflict, err.Error()), nil
+		errJSON, _ := json.Marshal(err)
+		return response(http.StatusConflict, string(errJSON)), nil
 	}
 
 	u, _ := json.Marshal(userToCreate)

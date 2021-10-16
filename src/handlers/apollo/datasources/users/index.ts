@@ -24,15 +24,17 @@ export default class UsersAPI extends RESTDataSource {
     this.baseURL = getConfig().apiBaseURL;
   }
 
+  basePath = 'users';
+
   protected willSendRequest?(request: RequestOptions): void {
     request.headers.set('Authorization', this.context.headers.authorization);
   }
 
   async getUser(): Promise<User> {
-    return this.get(`user/me`);
+    return this.get(`${this.basePath}/me`);
   }
 
   async createUser(): Promise<User> {
-    return this.post('user', {});
+    return this.post(this.basePath, {});
   }
 }
