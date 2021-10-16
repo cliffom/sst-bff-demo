@@ -42,8 +42,9 @@ func CreateUser(dbSvc dynamodbiface.DynamoDBAPI, u *User) error {
 
 	tableName := os.Getenv("TABLE_NAME")
 	input := &dynamodb.PutItemInput{
-		Item:      av,
-		TableName: aws.String(tableName),
+		Item:                av,
+		TableName:           aws.String(tableName),
+		ConditionExpression: aws.String("attribute_not_exists(PK) AND attribute_not_exists(SK)"),
 	}
 	_, err = dbSvc.PutItem(input)
 	if err != nil {
