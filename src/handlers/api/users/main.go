@@ -10,13 +10,11 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
+	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 )
 
 // Handler is the main function that handles the request
-func Handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayProxyResponse, error) {
-	session := session.Must(session.NewSession())
-	dbSvc := dynamodb.New(session)
-
+func Handler(ctx context.Context, dbSvc dynamodbiface.DynamoDBAPI, req events.APIGatewayV2HTTPRequest) (events.APIGatewayProxyResponse, error) {
 	userFromJWT, err := getUserFromJWT(req.RequestContext.Authorizer.JWT)
 	if err != nil {
 		// we should never enter this conditional as auth is handled at the APIG
@@ -41,14 +39,17 @@ func Handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.AP
 // handler is a wrapper to Handler and allows us to setup dependencies
 // for easier testing of Handler
 func handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayProxyResponse, error) {
-	return Handler(ctx, req)
+	session := session.Must(session.NewSession())
+	dbSvc := dynamodb.New(session)
+
+	return Handler(ctx, dbSvc, req)
 }
 
 func main() {
 	lambda.Start(handler)
 }
 
-func createUser(dbSvc *dynamodb.DynamoDB, userToCreate User) (events.APIGatewayProxyResponse, error) {
+func createUser(dbSvc dynamodbiface.DynamoDBAPI, userToCreate User) (events.APIGatewayProxyResponse, error) {
 	if err := CreateUser(dbSvc, &userToCreate); err != nil {
 		errJSON, _ := json.Marshal(err)
 		return response(http.StatusConflict, string(errJSON)), nil
@@ -87,7 +88,7 @@ func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescr
 	}, nil
 }
 
-func getUserByID(dbSvc *dynamodb.DynamoDB, id string) (events.APIGatewayProxyResponse, error) {
+func getUserByID(dbSvc dynamodbiface.DynamoDBAPI, id string) (events.APIGatewayProxyResponse, error) {
 	user, _ := GetUserByID(dbSvc, id)
 	u, err := json.Marshal(user)
 	if err != nil {
