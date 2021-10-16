@@ -1,6 +1,7 @@
 import * as cognito from '@aws-cdk/aws-cognito';
 import * as apigAuthorizers from '@aws-cdk/aws-apigatewayv2-authorizers';
 import * as sst from '@serverless-stack/resources';
+import {Duration} from '@aws-cdk/core';
 import {createTestHandler, createUsersHandler} from './functions/api';
 
 export default class APIStack extends sst.Stack {
@@ -25,6 +26,7 @@ export default class APIStack extends sst.Stack {
     const userPoolClient = new cognito.UserPoolClient(this, 'UserPoolClient', {
       userPool,
       authFlows: {userPassword: true},
+      idTokenValidity: Duration.days(1),
     });
 
     // Create DynamoDB Table
