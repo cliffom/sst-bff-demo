@@ -4,7 +4,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: ['airbnb-base', 'airbnb-typescript/base', 'prettier'],
+  extends: ['airbnb-base', 'airbnb-typescript/base', 'prettier', 'serverless-stack'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,

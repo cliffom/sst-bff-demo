@@ -3166,10 +3166,10 @@
     node-addon-api "3.2.1"
     node-gyp "8.1.0"
 
-"@serverless-stack/cli@0.47":
-  version "0.47.0"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.47.0.tgz#38fa13ebe5b8d6a925ebda388437bd3176a9d59a"
-  integrity sha512-ckRmSD7vzLa/fNrt+krHp78EI08m1/Yb5q+bH2VCwfaw/yI6F0RALSWwkpz+LEomKQZqTcg/ILgcvPa5RYkKVA==
+"@serverless-stack/cli@0.48.0":
+  version "0.48.0"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.48.0.tgz#c6fb29bda4ccb92b92eba1d410c0caeb65b935c1"
+  integrity sha512-eU3lShMxsQJomna5XpFYl0G8VihDOAQeHl8/Cod4NNbnvTs5Hqnak/H/aa27NOqFJLRD4Uco2tsSxpCsANJIPw==
   dependencies:
     "@aws-cdk/aws-apigatewayv2" "1.126.0"
     "@aws-cdk/aws-dynamodb" "1.126.0"
@@ -3182,8 +3182,8 @@
     "@babel/plugin-proposal-class-properties" "^7.10.4"
     "@babel/preset-env" "^7.10.4"
     "@serverless-stack/aws-lambda-ric" "^2.0.4"
-    "@serverless-stack/core" "^0.47.0"
-    "@serverless-stack/resources" "^0.47.0"
+    "@serverless-stack/core" "^0.48.0"
+    "@serverless-stack/resources" "^0.48.0"
     "@types/jest" "^26.0.7"
     "@types/node" "^14.0.27"
     "@typescript-eslint/eslint-plugin" "^4.15.1"
@@ -3198,6 +3198,7 @@
     detect-port-alt "^1.1.6"
     esbuild "^0.12.20"
     eslint "^7.16.0"
+    eslint-config-serverless-stack "^0.48.0"
     express "^4.17.1"
     fast-safe-stringify "^2.0.6"
     fs-extra "^9.0.1"
@@ -3212,10 +3213,10 @@
     ws "^7.4.0"
     yargs "^15.4.1"
 
-"@serverless-stack/core@^0.47.0":
-  version "0.47.0"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.47.0.tgz#a0a80c74d0d5c5e2b0ca4f1d6620edfbd0ddcd22"
-  integrity sha512-jPma8Ru2s0pAsvr0gjepXObGJXDzjQjY1/JREU2ylAJ+yqT8cVTCLsOjOX0Xpy4neX8Qyttq0gLxEcJT8r48HA==
+"@serverless-stack/core@^0.48.0":
+  version "0.48.0"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.48.0.tgz#693b357059c16c87c846fe739a10f6e49ed1e86a"
+  integrity sha512-8jHVdSYrseiANeETVGk0cJcsl+IrW4G5Twy4i5YDm5OQ47P84g5B33guhTLIZZTzwG+kbEH0C8a7M+Zm1YtwVw==
   dependencies:
     aws-cdk "1.126.0"
     aws-sdk "^2.761.0"
@@ -3261,10 +3262,10 @@
     path-to-regexp "^6.1.0"
     send "^0.17.1"
 
-"@serverless-stack/resources@0.47", "@serverless-stack/resources@^0.47.0":
-  version "0.47.0"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.47.0.tgz#66bfa65930aa2cccbd5b449d50badc91181b229d"
-  integrity sha512-SI9Jyr7EBtclsIzNvxHop2pEXj27mRwzTCsbqp71MMaFK9JtRWmxAAQ8I4++7mDD9rIxp+8YT5oJLi/nP9Gd4A==
+"@serverless-stack/resources@0.48.0", "@serverless-stack/resources@^0.48.0":
+  version "0.48.0"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.48.0.tgz#164e447db0a2b808da94b3d22fd3ca7d8005b202"
+  integrity sha512-t4a1ckPuDJaF9KCJ6iI+BQsWfPjferLsIzQUgTT6xD9fsTDcSsIPwLuBs2lGpjLWbI0rksVthViYh6y9DZhJpQ==
   dependencies:
     "@aws-cdk/aws-apigateway" "1.126.0"
     "@aws-cdk/aws-apigatewayv2" "1.126.0"
@@ -3304,7 +3305,7 @@
     "@aws-cdk/lambda-layer-awscli" "1.126.0"
     "@graphql-tools/load-files" "^6.3.2"
     "@graphql-tools/merge" "^6.2.14"
-    "@serverless-stack/core" "^0.47.0"
+    "@serverless-stack/core" "^0.48.0"
     "@serverless-stack/nextjs-lambda" "^0.1.9"
     "@types/jest" "^26.0.7"
     archiver "^5.3.0"
@@ -5649,6 +5650,18 @@ eslint-config-prettier@^8.3.0:
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.3.0.tgz#f7471b20b6fe8a9a9254cc684454202886a2dd7a"
   integrity sha512-BgZuLUSeKzvlL/VUjx/Yb787VQ26RU3gGjA3iiFvdsp/2bMfVIWUVP7tjxtjS0e+HP409cPlPvNkQloz8C91ew==
+
+eslint-config-serverless-stack@^0.48.0:
+  version "0.48.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-serverless-stack/-/eslint-config-serverless-stack-0.48.0.tgz#1953235e21bd9b27ed15ee87d81c0b8c5183dc64"
+  integrity sha512-1yC3H1TK3VRA8V7xsEQRYgEY7XesyyySGEH/ymleekuoG+z5QpiA9Qdh5qp2kRsv25zTqrCGb+BPuBiG53jbgg==
+  dependencies:
+    "@babel/eslint-parser" "^7.11.3"
+    "@babel/plugin-proposal-class-properties" "^7.10.4"
+    "@babel/preset-env" "^7.10.4"
+    "@typescript-eslint/eslint-plugin" "^4.15.1"
+    "@typescript-eslint/parser" "^4.15.1"
+    eslint "^7.16.0"
 
 eslint-import-resolver-node@^0.3.6:
   version "0.3.6"
