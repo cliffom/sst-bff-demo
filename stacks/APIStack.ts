@@ -1,32 +1,20 @@
-import * as cognito from '@aws-cdk/aws-cognito';
 import * as apigAuthorizers from '@aws-cdk/aws-apigatewayv2-authorizers';
 import * as sst from '@serverless-stack/resources';
-import {Duration} from '@aws-cdk/core';
 import {createTestHandler, createUsersHandler} from './functions/api';
+
+interface APIStackProps extends sst.StackProps {
+  readonly authorizer: apigAuthorizers.HttpUserPoolAuthorizer;
+}
 
 export default class APIStack extends sst.Stack {
   public readonly api: sst.Api;
 
-  constructor(scope: sst.App, id: string, props?: sst.StackProps) {
+  constructor(scope: sst.App, id: string, props?: APIStackProps) {
     super(scope, id, props);
 
     // Let's Go!
     this.setDefaultFunctionProps({
       runtime: 'go1.x',
-    });
-
-    // Create User Pool
-    const userPool = new cognito.UserPool(this, 'UserPool', {
-      selfSignUpEnabled: true,
-      signInAliases: {email: true},
-      signInCaseSensitive: false,
-    });
-
-    // Create User Pool Client
-    const userPoolClient = new cognito.UserPoolClient(this, 'UserPoolClient', {
-      userPool,
-      authFlows: {userPassword: true},
-      idTokenValidity: Duration.days(1),
     });
 
     // Create DynamoDB Table
@@ -44,10 +32,7 @@ export default class APIStack extends sst.Stack {
 
     // Create a HTTP API
     this.api = new sst.Api(this, 'Api', {
-      defaultAuthorizer: new apigAuthorizers.HttpUserPoolAuthorizer({
-        userPool,
-        userPoolClient,
-      }),
+      defaultAuthorizer: props?.authorizer,
       defaultAuthorizationType: sst.ApiAuthorizationType.JWT,
       routes: {
         'GET /test': {
@@ -60,10 +45,5 @@ export default class APIStack extends sst.Stack {
     });
 
     this.api.attachPermissions([table]);
-
-    this.addOutputs({
-      UserPoolId: userPool.userPoolId,
-      UserPoolClientId: userPoolClient.userPoolClientId,
-    });
   }
 }

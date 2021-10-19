@@ -2,6 +2,7 @@ import * as sst from '@serverless-stack/resources';
 import {RemovalPolicy} from '@aws-cdk/core';
 import ApolloStack from './ApolloStack';
 import APIStack from './APIStack';
+import AuthStack from './AuthStack';
 
 export default function main(app: sst.App): void {
   // Remove all resources when non-prod stages are removed
@@ -10,8 +11,11 @@ export default function main(app: sst.App): void {
     app.setDefaultRemovalPolicy(RemovalPolicy.DESTROY);
   }
 
+  // Create our Auth stack that defines our Cognito pool and client
+  const authStack = new AuthStack(app, 'auth-stack');
+
   // Create the API stack where all services are defined
-  const apiStack = new APIStack(app, 'api-stack');
+  const apiStack = new APIStack(app, 'api-stack', {authorizer: authStack.authorizer});
 
   // Create the Apollo stack where the Apollo Server is defined
   /* eslint-disable no-new */
