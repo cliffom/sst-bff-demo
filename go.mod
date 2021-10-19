@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-cdk-go/awscdk v1.128.0-devpreview
 	github.com/aws/aws-cdk-go/awscdk/v2 v2.0.0-rc.24
 	github.com/aws/aws-lambda-go v1.27.0
-	github.com/aws/aws-sdk-go v1.41.3
+	github.com/aws/aws-sdk-go v1.41.6
 	github.com/aws/constructs-go/constructs/v10 v10.0.9
 	github.com/aws/constructs-go/constructs/v3 v3.3.161
 	github.com/aws/jsii-runtime-go v1.39.0

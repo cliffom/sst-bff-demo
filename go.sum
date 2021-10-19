@@ -7,8 +7,8 @@ github.com/aws/aws-cdk-go/awscdk/v2 v2.0.0-rc.24 h1:pgbNPSvqzbnJCqrIcqthQrYhD5iu
 github.com/aws/aws-cdk-go/awscdk/v2 v2.0.0-rc.24/go.mod h1:ryhEDLCfdCHP6DsZhpkLEKn8kMAsnz2nIhmCJvkHacs=
 github.com/aws/aws-lambda-go v1.27.0 h1:aLzrJwdyHoF1A18YeVdJjX8Ixkd+bpogdxVInvHcWjM=
 github.com/aws/aws-lambda-go v1.27.0/go.mod h1:jJmlefzPfGnckuHdXX7/80O3BvUUi12XOkbv4w9SGLU=
-github.com/aws/aws-sdk-go v1.41.3 h1:deglLZ1jjHdhkd6Rbad1MZM4gL+1pfnTfjuFk6CGJFM=
-github.com/aws/aws-sdk-go v1.41.3/go.mod h1:585smgzpB/KqRA+K3y/NL/oYRqQvpNJYvLm+LY1U59Q=
+github.com/aws/aws-sdk-go v1.41.6 h1:ojO1jWhE3lkJlTFQOq0rlWZ11q18LIdsZNtGJ07FFEA=
+github.com/aws/aws-sdk-go v1.41.6/go.mod h1:585smgzpB/KqRA+K3y/NL/oYRqQvpNJYvLm+LY1U59Q=
 github.com/aws/constructs-go/constructs/v10 v10.0.9 h1:YGk+deTAD3rgyANybjOtaoVrjC7HZZtALeC872avWFQ=
 github.com/aws/constructs-go/constructs/v10 v10.0.9/go.mod h1:RC6w8bOwxLmPX7Jfo9dkEZ9iVfgH4QnaVnfWvaNOHy0=
 github.com/aws/constructs-go/constructs/v3 v3.3.161 h1:Arf2cQj/OEnhCReTi+BjZY+eFE9Y8YaFbhjBwhv/bAA=
