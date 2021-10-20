@@ -9,6 +9,11 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
 )
 
+const (
+	userEntryType = "USER"
+	userPKPrefix  = "U:"
+)
+
 type (
 	userItem struct {
 		PK   string
@@ -26,12 +31,16 @@ type (
 	}
 )
 
+func (u *User) GetID() string {
+	return userPKPrefix + u.ID
+}
+
 func CreateUser(dbSvc dynamodbiface.DynamoDBAPI, u *User) error {
 	u.Created = NewTime().String()
 	item := userItem{
-		PK:   "U:" + u.ID,
-		SK:   "U:" + u.ID,
-		Type: "USER",
+		PK:   u.GetID(),
+		SK:   u.GetID(),
+		Type: userEntryType,
 		User: *u,
 	}
 
@@ -55,7 +64,7 @@ func CreateUser(dbSvc dynamodbiface.DynamoDBAPI, u *User) error {
 }
 
 func GetUserByID(dbSvc dynamodbiface.DynamoDBAPI, id string) (*User, error) {
-	userID := "U:" + id
+	userID := userPKPrefix + id
 
 	tableName := os.Getenv("TABLE_NAME")
 	result, err := dbSvc.GetItem(&dynamodb.GetItemInput{
