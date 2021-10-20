@@ -15,6 +15,7 @@ export default function main(app: sst.App): void {
   // Create our Auth stack that defines our Cognito pool and client
   const authStack = new AuthStack(app, 'auth-stack');
 
+  // Create our single DynamoDB table
   const tableStack = new TableStack(app, 'table-stack');
 
   // Create the API stack where all services are defined
