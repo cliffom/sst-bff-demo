@@ -4,6 +4,7 @@ import {createTestHandler, createUsersHandler} from './functions/api';
 
 interface APIStackProps extends sst.StackProps {
   readonly authorizer: apigAuthorizers.HttpUserPoolAuthorizer;
+  readonly table: sst.Table;
 }
 
 export default class APIStack extends sst.Stack {
@@ -17,17 +18,8 @@ export default class APIStack extends sst.Stack {
       runtime: 'go1.x',
     });
 
-    // Create DynamoDB Table
-    const table = new sst.Table(this, 'Storage', {
-      fields: {
-        PK: sst.TableFieldType.STRING,
-        SK: sst.TableFieldType.STRING,
-      },
-      primaryIndex: {partitionKey: 'PK', sortKey: 'SK'},
-    });
-
     // Create our route handlers
-    const usersHandler = createUsersHandler({scope: this, table});
+    const usersHandler = createUsersHandler({scope: this, table: props?.table as sst.Table});
     const testHandler = createTestHandler({scope: this});
 
     // Create a HTTP API
@@ -44,6 +36,6 @@ export default class APIStack extends sst.Stack {
       },
     });
 
-    this.api.attachPermissions([table]);
+    this.api.attachPermissions([props?.table as sst.Table]);
   }
 }
