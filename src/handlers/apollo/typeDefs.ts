@@ -2,7 +2,7 @@ import {gql} from 'apollo-server-lambda';
 
 const typeDefs = gql`
   type Config {
-    apiBaseURL: String
+    usersAPIBaseURL: String
     stage: String
     isLocal: Boolean
   }
