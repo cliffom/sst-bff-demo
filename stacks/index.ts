@@ -1,9 +1,12 @@
 import * as sst from '@serverless-stack/resources';
 import {RemovalPolicy} from '@aws-cdk/core';
-import ApolloStack from './ApolloStack';
-import APIStack from './APIStack';
+
 import AuthStack from './AuthStack';
 import TableStack from './TableStack';
+
+import TestAPIStack from './test_api/TestAPIStack';
+import UsersAPIStack from './users_api/UsersAPIStack';
+import ApolloStack from './ApolloStack';
 
 export default function main(app: sst.App): void {
   // Remove all resources when non-prod stages are removed
@@ -18,13 +21,20 @@ export default function main(app: sst.App): void {
   // Create our single DynamoDB table
   const tableStack = new TableStack(app, 'table-stack');
 
-  // Create the API stack where all services are defined
-  const apiStack = new APIStack(app, 'api-stack', {
+  // Create a simple, test API consisting of a single Lambda function
+  // fronted with an API Gateway
+  /* eslint-disable-next-line no-new */
+  new TestAPIStack(app, 'test-api-stack');
+
+  // Create our Users API
+  const usersAPIStack = new UsersAPIStack(app, 'users-api-stack', {
     authorizer: authStack.authorizer,
     table: tableStack.table,
   });
 
   // Create the Apollo stack where the Apollo Server is defined
   /* eslint-disable-next-line no-new */
-  new ApolloStack(app, 'apollo-stack', {api: apiStack.api});
+  new ApolloStack(app, 'apollo-stack', {
+    usersAPI: usersAPIStack.api,
+  });
 }

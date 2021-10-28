@@ -1,7 +1,7 @@
 import * as sst from '@serverless-stack/resources';
 
 interface ApolloStackProps extends sst.StackProps {
-  readonly api: sst.Api;
+  readonly usersAPI: sst.Api;
 }
 
 export default class ApolloStack extends sst.Stack {
@@ -17,7 +17,7 @@ export default class ApolloStack extends sst.Stack {
       server: new sst.Function(this, 'ApolloLambda', {
         handler: 'src/handlers/apollo/lambda.handler',
         environment: {
-          API_URL: props?.api.url as string,
+          USERS_API_URL: props?.usersAPI.url as string,
           STAGE: scope.stage,
         },
       }),

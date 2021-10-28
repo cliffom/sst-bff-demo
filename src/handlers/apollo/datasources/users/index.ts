@@ -21,7 +21,7 @@ export default class UsersAPI extends RESTDataSource {
   constructor() {
     super();
 
-    this.baseURL = getConfig().apiBaseURL;
+    this.baseURL = getConfig().usersAPIBaseURL;
   }
 
   basePath = 'users';
