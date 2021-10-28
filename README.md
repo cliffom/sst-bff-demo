@@ -19,7 +19,7 @@ Lambda functions.
 
 Here we build and deploy 3 Lambda functions:
 - One Lambda function with the NodeJS runtime for Apollo Server (Apollo Stack)
-- One Lambda function with the Go runtime for user services (API Stack)
+- One Lambda function with the Go runtime for user services (Users API Stack)
 - One Lambda function with the Go runtime as a test route (API Stack)
 
 Though the API Gateways fronting Apollo Server and API stacks are accessible
