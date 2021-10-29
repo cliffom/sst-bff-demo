@@ -1,6 +1,5 @@
 import * as apigAuthorizers from '@aws-cdk/aws-apigatewayv2-authorizers';
 import * as sst from '@serverless-stack/resources';
-import {createUsersHandler} from './functions';
 
 interface APIStackProps extends sst.StackProps {
   readonly authorizer: apigAuthorizers.HttpUserPoolAuthorizer;
@@ -19,7 +18,12 @@ export default class UsersAPIStack extends sst.Stack {
     });
 
     // Create our route handlers
-    const usersHandler = createUsersHandler({scope: this, table: props?.table as sst.Table});
+    const usersHandler = new sst.Function(this, 'usersHandler', {
+      handler: 'src/handlers/api/users',
+      environment: {
+        TABLE_NAME: props?.table.dynamodbTable.tableName as string,
+      },
+    });
 
     // Create a HTTP API
     this.api = new sst.Api(this, 'Api', {
