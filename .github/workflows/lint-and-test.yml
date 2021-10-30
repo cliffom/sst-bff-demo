@@ -1,7 +1,7 @@
-name: lint
+name: lint-and-test
 on: push
 jobs:
-  lint:
+  lint-and-test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -9,3 +9,5 @@ jobs:
       run: yarn
     - name: Run ESLint
       run: yarn run lint
+    - name: Run tests
+      run: yarn run test
