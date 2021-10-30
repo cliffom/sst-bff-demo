@@ -36,6 +36,7 @@ func (m *mockDynamoDBClient) GetItem(*dynamodb.GetItemInput) (*dynamodb.GetItemO
 func TestCreateUser(t *testing.T) {
 	mockSvc := &mockDynamoDBClient{}
 	u := &User{
+		ID:        gofakeit.UUID(),
 		FirstName: gofakeit.FirstName(),
 		LastName:  gofakeit.LastName(),
 		Email:     gofakeit.Email(),
