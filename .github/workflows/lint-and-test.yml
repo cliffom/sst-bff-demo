@@ -1,0 +1,13 @@
+name: lint-and-test
+on: push
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install modules
+      run: yarn
+    - name: Run ESLint
+      run: yarn run lint
+    - name: Run tests
+      run: yarn run test
