@@ -70,27 +70,11 @@ Runs your tests using Jest. Takes all the [Jest CLI options](https://jestjs.io/d
 Use the following commands to create, verify, and authenticate a user in Cognito
 
 ```sh
-# Create a user in Cognito
-aws cognito-idp sign-up \
-    --region us-east-1 \
-    --client-id <CLIENT_ID> \
-    --username <EMAIL> \
-    --password <PASSWORD> \
-    --user-attributes Name=family_name,Value=Lastname Name=given_name,Value=Firstname
-
-# Verify a user in Cognito
-aws cognito-idp admin-confirm-sign-up \
-    --region us-east-1 \
-    --user-pool-id <USER_POOL_ID> \
-    --username <EMAIL>
+# Create and verify a user in Cognito
+make user CLIENT_ID=$CLIENT_ID USER_POOL_ID=$USER_POOL_ID EMAIL=$EMAIL PASSWORD=$PASSWORD
 
 # Authenticate a user and get the required token
-aws cognito-idp initiate-auth \
-    --region us-east-1 \
-    --client-id <CLIENT_ID> \
-    --auth-flow USER_PASSWORD_AUTH \
-    --auth-parameters USERNAME=<EMAIL>,PASSWORD=<PASSWORD> \
-    | jq '.AuthenticationResult.IdToken'
+make token CLIENT_ID=$CLIENT_ID EMAIL=$EMAIL PASSWORD=$PASSWORD
 ```
 
 ## Documentation
