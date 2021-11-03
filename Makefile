@@ -2,6 +2,13 @@ API_BASE_PATH=src/handlers/api
 COGNITO_COMMAND=aws cognito-idp
 REGION ?= us-east-1
 
+.PHONY: delete-user
+delete-user:
+	@$(COGNITO_COMMAND) admin-delete-user \
+	--region $(REGION) \
+	--user-pool-id $(USER_POOL_ID) \
+	--username $(EMAIL)
+
 .PHONY: test
 test:
 	cd $(API_BASE_PATH)/users && go test
