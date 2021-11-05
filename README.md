@@ -71,10 +71,10 @@ Use the following commands to create, verify, and authenticate a user in Cognito
 
 ```sh
 # Create and verify a user in Cognito
-make user CLIENT_ID=$CLIENT_ID USER_POOL_ID=$USER_POOL_ID EMAIL=$EMAIL PASSWORD=$PASSWORD
+make create-user CLIENT_ID=$CLIENT_ID USER_POOL_ID=$USER_POOL_ID EMAIL=$EMAIL PASSWORD=$PASSWORD
 
 # Authenticate a user and get the required token
-make token CLIENT_ID=$CLIENT_ID EMAIL=$EMAIL PASSWORD=$PASSWORD
+make user-token CLIENT_ID=$CLIENT_ID EMAIL=$EMAIL PASSWORD=$PASSWORD
 ```
 
 ## Documentation
