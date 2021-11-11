@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "test": "sst test && make test",
-    "start": "sst start",
+    "start": "sst start --udp",
     "build": "sst build",
     "deploy": "sst deploy",
     "lint": "yarn run eslint stacks/ src/handlers/apollo"
@@ -29,8 +29,8 @@
     "@aws-cdk/aws-apigatewayv2-authorizers": "1.126.0",
     "@aws-cdk/aws-cognito": "1.126.0",
     "@aws-cdk/core": "1.126.0",
-    "@serverless-stack/cli": "0.50.3",
-    "@serverless-stack/resources": "0.50.3",
+    "@serverless-stack/cli": "0.51.0",
+    "@serverless-stack/resources": "0.51.0",
     "apollo-datasource-rest": "^3.3.0",
     "apollo-server-lambda": "^3.4.0"
   }
