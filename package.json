@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "test": "sst test && make test",
-    "start": "sst start --udp",
+    "start": "sst start",
     "build": "sst build",
     "deploy": "sst deploy",
     "lint": "yarn run eslint stacks/ src/handlers/apollo"
