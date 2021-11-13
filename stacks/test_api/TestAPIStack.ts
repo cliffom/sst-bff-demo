@@ -19,5 +19,10 @@ export default class APIStack extends sst.Stack {
         },
       },
     });
+
+    // Show the API endpoint in output
+    this.addOutputs({
+      TestStackURL: this.api.url,
+    });
   }
 }
