@@ -11,7 +11,7 @@
     "lint": "yarn run eslint stacks/ src/handlers/apollo"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.126.0",
+    "@aws-cdk/assert": "1.132.0",
     "@types/aws-lambda": "^8.10.70",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
@@ -26,11 +26,11 @@
     "prettier-airbnb-config": "^1.0.0"
   },
   "dependencies": {
-    "@aws-cdk/aws-apigatewayv2-authorizers": "1.126.0",
-    "@aws-cdk/aws-cognito": "1.126.0",
-    "@aws-cdk/core": "1.126.0",
-    "@serverless-stack/cli": "0.51.1",
-    "@serverless-stack/resources": "0.51.1",
+    "@aws-cdk/aws-apigatewayv2-authorizers": "1.132.0",
+    "@aws-cdk/aws-cognito": "1.132.0",
+    "@aws-cdk/core": "1.132.0",
+    "@serverless-stack/cli": "0.56.2",
+    "@serverless-stack/resources": "0.56.2",
     "apollo-datasource-rest": "^3.3.0",
     "apollo-server-lambda": "^3.4.0"
   }
