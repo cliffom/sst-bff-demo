@@ -25,7 +25,7 @@ export default class AuthStack extends sst.Stack {
 
     this.authorizer = new apigAuthorizers.HttpUserPoolAuthorizer({
       userPool,
-      userPoolClient,
+      userPoolClients: [userPoolClient],
     });
 
     this.addOutputs({
