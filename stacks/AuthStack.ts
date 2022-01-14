@@ -1,7 +1,7 @@
-import * as cognito from '@aws-cdk/aws-cognito';
-import * as apigAuthorizers from '@aws-cdk/aws-apigatewayv2-authorizers';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
+import * as apigAuthorizers from '@aws-cdk/aws-apigatewayv2-authorizers-alpha';
 import * as sst from '@serverless-stack/resources';
-import {Duration} from '@aws-cdk/core';
+import {Duration} from 'aws-cdk-lib';
 
 export default class AuthStack extends sst.Stack {
   public readonly authorizer: apigAuthorizers.HttpUserPoolAuthorizer;
@@ -23,10 +23,14 @@ export default class AuthStack extends sst.Stack {
       idTokenValidity: Duration.days(1),
     });
 
-    this.authorizer = new apigAuthorizers.HttpUserPoolAuthorizer({
-      userPool,
+    const authorizerProps = {
       userPoolClients: [userPoolClient],
-    });
+    };
+    this.authorizer = new apigAuthorizers.HttpUserPoolAuthorizer(
+      'Authorizer',
+      userPool,
+      authorizerProps
+    );
 
     this.addOutputs({
       UserPoolId: userPool.userPoolId,

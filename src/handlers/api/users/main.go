@@ -72,12 +72,12 @@ func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescr
 
 	firstName, ok := jwt.Claims["given_name"]
 	if !ok {
-		return nil, errors.New("could not get given_name from JWT claims")
+		firstName = ""
 	}
 
 	lastName, ok := jwt.Claims["family_name"]
 	if !ok {
-		return nil, errors.New("could not get family_name from JWT claims")
+		lastName = ""
 	}
 
 	return &User{
