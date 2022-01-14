@@ -1,5 +1,5 @@
 import * as sst from '@serverless-stack/resources';
-import {RemovalPolicy} from '@aws-cdk/core';
+import {RemovalPolicy} from 'aws-cdk-lib';
 
 import AuthStack from './AuthStack';
 import TableStack from './TableStack';
