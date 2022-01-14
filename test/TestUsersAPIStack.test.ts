@@ -1,8 +1,8 @@
-import {countResources, countResourcesLike, expect, haveResource} from '@aws-cdk/assert';
 import * as sst from '@serverless-stack/resources';
 import UsersAPIStack from '../stacks/users_api/UsersAPIStack';
 import AuthStack from '../stacks/AuthStack'
 import TableStack from '../stacks/TableStack'
+import { Template } from "aws-cdk-lib/assertions";
 
 test('Test UsersAPIStack', () => {
   const app = new sst.App();
@@ -14,19 +14,19 @@ test('Test UsersAPIStack', () => {
     authorizer: authStack.authorizer,
     table: tableStack.table
   });
+  const template = Template.fromStack(stack)
 
   // THEN
-  expect(authStack).to(haveResource('AWS::Cognito::UserPool'));
-  expect(tableStack).to(haveResource('AWS::DynamoDB::Table'));
-
-  expect(stack).to(countResources('AWS::Lambda::Function', 1));
-  expect(stack).to(countResources('AWS::ApiGatewayV2::Route', 2));
-  expect(stack).to(countResourcesLike('AWS::ApiGatewayV2::Route', 1, {
+  template.resourceCountIs('AWS::Lambda::Function', 1);
+  template.resourceCountIs('AWS::ApiGatewayV2::Route', 2);
+  
+  template.hasResourceProperties('AWS::ApiGatewayV2::Route', {
     RouteKey: 'GET /users/me',
     AuthorizationType: 'JWT'
-  }));
-  expect(stack).to(countResourcesLike('AWS::ApiGatewayV2::Route', 1, {
+  });
+
+  template.hasResourceProperties('AWS::ApiGatewayV2::Route', {
     RouteKey: 'POST /users',
     AuthorizationType: 'JWT'
-  }));
+  });
 });

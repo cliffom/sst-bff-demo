@@ -1,14 +1,16 @@
-import {countResourcesLike, expect, haveResource} from '@aws-cdk/assert';
 import * as sst from '@serverless-stack/resources';
 import TestAPIStack from '../stacks/test_api/TestAPIStack';
+import { Template } from "aws-cdk-lib/assertions";
 
 test('Test Stack', () => {
   const app = new sst.App();
   // WHEN
   const stack = new TestAPIStack(app, 'test-stack');
+  const template = Template.fromStack(stack)
+
   // THEN
-  expect(stack).to(haveResource('AWS::Lambda::Function'));
-  expect(stack).to(countResourcesLike('AWS::ApiGatewayV2::Route', 1, {
+  template.resourceCountIs("AWS::Lambda::Function", 1);
+  template.hasResourceProperties('AWS::ApiGatewayV2::Route', {
     RouteKey: 'GET /test'
-  }));
+  });
 });
