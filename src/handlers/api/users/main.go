@@ -26,12 +26,6 @@ func Handler(ctx context.Context, dbSvc dynamodbiface.DynamoDBAPI, req events.AP
 	switch httpMethod := req.RequestContext.HTTP.Method; httpMethod {
 	case http.MethodGet:
 		return getUserByID(dbSvc, userFromJWT.ID)
-
-	case http.MethodPost:
-		if err := json.Unmarshal([]byte(req.Body), &userFromJWT); err != nil {
-			return response(http.StatusInternalServerError, ""), err
-		}
-		return createUser(dbSvc, *userFromJWT)
 	}
 
 	return response(http.StatusMethodNotAllowed, ""), nil
@@ -48,16 +42,6 @@ func handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.AP
 
 func main() {
 	lambda.Start(handler)
-}
-
-func createUser(dbSvc dynamodbiface.DynamoDBAPI, userToCreate user_model.User) (events.APIGatewayProxyResponse, error) {
-	if err := user_model.CreateUser(dbSvc, &userToCreate); err != nil {
-		errJSON, _ := json.Marshal(err)
-		return response(http.StatusConflict, string(errJSON)), nil
-	}
-
-	u, _ := json.Marshal(userToCreate)
-	return response(http.StatusCreated, string(u)), nil
 }
 
 func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescription) (*user_model.User, error) {

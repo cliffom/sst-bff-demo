@@ -22,10 +22,6 @@ const typeDefs = gql`
   type Query {
     User: User
   }
-
-  type Mutation {
-    CreateUser: User
-  }
 `;
 
 export default typeDefs;
