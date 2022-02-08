@@ -11,6 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
+	"github.com/cliffom/sst-bff-demo/src/models/user_model"
 )
 
 // Handler is the main function that handles the request
@@ -49,8 +50,8 @@ func main() {
 	lambda.Start(handler)
 }
 
-func createUser(dbSvc dynamodbiface.DynamoDBAPI, userToCreate User) (events.APIGatewayProxyResponse, error) {
-	if err := CreateUser(dbSvc, &userToCreate); err != nil {
+func createUser(dbSvc dynamodbiface.DynamoDBAPI, userToCreate user_model.User) (events.APIGatewayProxyResponse, error) {
+	if err := user_model.CreateUser(dbSvc, &userToCreate); err != nil {
 		errJSON, _ := json.Marshal(err)
 		return response(http.StatusConflict, string(errJSON)), nil
 	}
@@ -59,7 +60,7 @@ func createUser(dbSvc dynamodbiface.DynamoDBAPI, userToCreate User) (events.APIG
 	return response(http.StatusCreated, string(u)), nil
 }
 
-func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescription) (*User, error) {
+func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescription) (*user_model.User, error) {
 	id, ok := jwt.Claims["sub"]
 	if !ok {
 		return nil, errors.New("could not get userID from JWT claims")
@@ -80,7 +81,7 @@ func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescr
 		lastName = ""
 	}
 
-	return &User{
+	return &user_model.User{
 		ID:        id,
 		Email:     email,
 		FirstName: firstName,
@@ -89,7 +90,7 @@ func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescr
 }
 
 func getUserByID(dbSvc dynamodbiface.DynamoDBAPI, id string) (events.APIGatewayProxyResponse, error) {
-	user, _ := GetUserByID(dbSvc, id)
+	user, _ := user_model.GetUserByID(dbSvc, id)
 	u, err := json.Marshal(user)
 	if err != nil {
 		return response(http.StatusInternalServerError, ""), err

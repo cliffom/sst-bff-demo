@@ -1,4 +1,4 @@
-package main
+package user_model
 
 import (
 	"math/rand"

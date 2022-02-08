@@ -1,7 +1,8 @@
-package main
+package user_model
 
 import (
 	"os"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
@@ -36,7 +37,7 @@ func (u *User) GetID() string {
 }
 
 func CreateUser(dbSvc dynamodbiface.DynamoDBAPI, u *User) error {
-	u.Created = NewTime().String()
+	u.Created = time.Now().UTC().Format(time.RFC3339)
 	item := userItem{
 		PK:   u.GetID(),
 		SK:   u.GetID(),
