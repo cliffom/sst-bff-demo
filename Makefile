@@ -10,6 +10,7 @@ test:
 .PHONY: create-user
 create-user:
 	@$(COGNITO_COMMAND) sign-up \
+		--no-cli-pager \
 		--region $(REGION) \
 		--client-id $(CLIENT_ID) \
 		--username $(EMAIL) \
