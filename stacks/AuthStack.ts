@@ -9,11 +9,24 @@ export default class AuthStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
     super(scope, id, props);
 
+    // Let's Go!
+    this.setDefaultFunctionProps({
+      runtime: 'go1.x',
+    });
+
+    // Create our async handlers
+    const usersHandler = new sst.Function(this, 'usersHandler', {
+      handler: 'src/handlers/async/users',
+    });
+
     // Create User Pool
     const userPool = new cognito.UserPool(this, 'UserPool', {
       selfSignUpEnabled: true,
       signInAliases: {email: true},
       signInCaseSensitive: false,
+      lambdaTriggers: {
+        postConfirmation: usersHandler
+      }
     });
 
     // Create User Pool Client

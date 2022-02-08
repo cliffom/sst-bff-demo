@@ -9,6 +9,7 @@ test('Test Stack', () => {
   const template = Template.fromStack(stack)
 
   // THEN
+  template.resourceCountIs("AWS::Lambda::Function", 1);
   template.resourceCountIs('AWS::Cognito::UserPool', 1);
   template.resourceCountIs('AWS::Cognito::UserPoolClient', 1);
 });
