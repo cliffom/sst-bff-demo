@@ -20,13 +20,13 @@ export default function main(app: sst.App): void {
   const tableStack = new TableStack(app, 'table-stack');
 
   // Create our user tasks stack
-  const usersTasksStack = new UserTasksStack(app, 'user-tasks-stack', {
+  const userTasksStack = new UserTasksStack(app, 'user-tasks-stack', {
     table: tableStack.table,
   });
 
   // Create our Auth stack that defines our Cognito pool and client
   const authStack = new AuthStack(app, 'auth-stack', {
-    postConfirmationFunction: usersTasksStack.createUserFunction,
+    postConfirmationFunction: userTasksStack.createUserFunction,
   });
 
   // Create a simple, test API consisting of a single Lambda function
