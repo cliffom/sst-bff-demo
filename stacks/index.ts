@@ -6,7 +6,7 @@ import TableStack from './TableStack';
 
 import TestAPIStack from './test_api/TestAPIStack';
 import UsersAPIStack from './users_api/UsersAPIStack';
-import UsersAsyncStack from './users_async/UsersAsyncStack';
+import UserTasksStack from './user_tasks/UserTasksStack';
 import ApolloStack from './ApolloStack';
 
 export default function main(app: sst.App): void {
@@ -20,13 +20,13 @@ export default function main(app: sst.App): void {
   const tableStack = new TableStack(app, 'table-stack');
 
   // Create our Aynsc users stack
-  const usersAsyncStack = new UsersAsyncStack(app, 'users-async-stack', {
+  const usersTasksStack = new UserTasksStack(app, 'users-tasks-stack', {
     table: tableStack.table,
   });
 
   // Create our Auth stack that defines our Cognito pool and client
   const authStack = new AuthStack(app, 'auth-stack', {
-    postConfirmationFunction: usersAsyncStack.createUserFunction,
+    postConfirmationFunction: usersTasksStack.createUserFunction,
   });
 
   // Create a simple, test API consisting of a single Lambda function
