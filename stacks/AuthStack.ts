@@ -19,7 +19,7 @@ export default class AuthStack extends sst.Stack {
       signInAliases: {email: true},
       signInCaseSensitive: false,
       lambdaTriggers: {
-        postConfirmation: props!.postConfirmationFunction,
+        postConfirmation: props?.postConfirmationFunction,
       },
     });
 

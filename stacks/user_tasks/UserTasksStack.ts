@@ -19,10 +19,10 @@ export default class UserTasksStack extends sst.Stack {
     this.createUserFunction = new sst.Function(this, 'postConfirmationHandler', {
       handler: 'src/handlers/tasks/cognito/post_confirm_user',
       environment: {
-        TABLE_NAME: props!.table.dynamodbTable.tableName as string,
+        TABLE_NAME: props?.table.dynamodbTable.tableName as string,
       },
     });
 
-    this.createUserFunction.attachPermissions([props!.table as sst.Table]);
+    this.createUserFunction.attachPermissions([props?.table as sst.Table]);
   }
 }

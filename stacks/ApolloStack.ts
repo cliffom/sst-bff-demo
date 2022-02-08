@@ -17,7 +17,7 @@ export default class ApolloStack extends sst.Stack {
       server: new sst.Function(this, 'ApolloLambda', {
         handler: 'src/handlers/apollo/lambda.handler',
         environment: {
-          USERS_API_URL: props!.usersAPI.url as string,
+          USERS_API_URL: props?.usersAPI.url as string,
           STAGE: scope.stage,
         },
       }),
