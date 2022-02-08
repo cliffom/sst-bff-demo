@@ -25,8 +25,8 @@ export default class AuthStack extends sst.Stack {
       signInAliases: {email: true},
       signInCaseSensitive: false,
       lambdaTriggers: {
-        postConfirmation: usersHandler
-      }
+        postConfirmation: usersHandler,
+      },
     });
 
     // Create User Pool Client
