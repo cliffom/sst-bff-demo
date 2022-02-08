@@ -3,10 +3,14 @@ import * as apigAuthorizers from '@aws-cdk/aws-apigatewayv2-authorizers-alpha';
 import * as sst from '@serverless-stack/resources';
 import {Duration} from 'aws-cdk-lib';
 
+interface AuthStackProps extends sst.StackProps {
+  readonly table: sst.Table;
+}
+
 export default class AuthStack extends sst.Stack {
   public readonly authorizer: apigAuthorizers.HttpUserPoolAuthorizer;
 
-  constructor(scope: sst.App, id: string, props?: sst.StackProps) {
+  constructor(scope: sst.App, id: string, props?: AuthStackProps) {
     super(scope, id, props);
 
     // Let's Go!
@@ -17,7 +21,12 @@ export default class AuthStack extends sst.Stack {
     // Create our async handlers
     const usersHandler = new sst.Function(this, 'usersHandler', {
       handler: 'src/handlers/async/users',
+      environment: {
+        TABLE_NAME: props?.table.dynamodbTable.tableName as string,
+      },
     });
+
+    usersHandler.attachPermissions([props?.table as sst.Table]);
 
     // Create User Pool
     const userPool = new cognito.UserPool(this, 'UserPool', {

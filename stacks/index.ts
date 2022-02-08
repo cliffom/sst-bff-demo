@@ -15,11 +15,13 @@ export default function main(app: sst.App): void {
     app.setDefaultRemovalPolicy(RemovalPolicy.DESTROY);
   }
 
-  // Create our Auth stack that defines our Cognito pool and client
-  const authStack = new AuthStack(app, 'auth-stack');
-
   // Create our single DynamoDB table
   const tableStack = new TableStack(app, 'table-stack');
+
+  // Create our Auth stack that defines our Cognito pool and client
+  const authStack = new AuthStack(app, 'auth-stack', {
+    table: tableStack.table,
+  });
 
   // Create a simple, test API consisting of a single Lambda function
   // fronted with an API Gateway
