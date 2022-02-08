@@ -1,4 +1,4 @@
-package user_model
+package user_schema
 
 import (
 	"math/rand"

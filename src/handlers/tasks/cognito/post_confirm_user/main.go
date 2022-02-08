@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
-	"github.com/cliffom/sst-bff-demo/src/models/user_model"
+	"github.com/cliffom/sst-bff-demo/src/schemas/user_schema"
 )
 
 func Handler(ctx context.Context, dbSvc dynamodbiface.DynamoDBAPI, req events.CognitoEventUserPoolsPostConfirmation) (events.CognitoEventUserPoolsPostConfirmation, error) {
@@ -19,7 +19,7 @@ func Handler(ctx context.Context, dbSvc dynamodbiface.DynamoDBAPI, req events.Co
 		log.Printf("could not get user from event: %v", err)
 	}
 
-	if err := user_model.CreateUser(dbSvc, user); err != nil {
+	if err := user_schema.CreateUser(dbSvc, user); err != nil {
 		log.Printf("could not save user to table: %v", err)
 	} else {
 		log.Printf("successfully saved user to table")
@@ -41,7 +41,7 @@ func main() {
 	lambda.Start(handler)
 }
 
-func getUserFromEvent(event *events.CognitoEventUserPoolsPostConfirmationRequest) (*user_model.User, error) {
+func getUserFromEvent(event *events.CognitoEventUserPoolsPostConfirmationRequest) (*user_schema.User, error) {
 	id, ok := event.UserAttributes["sub"]
 	if !ok {
 		return nil, errors.New("could not get userID from event")
@@ -62,7 +62,7 @@ func getUserFromEvent(event *events.CognitoEventUserPoolsPostConfirmationRequest
 		lastName = ""
 	}
 
-	return &user_model.User{
+	return &user_schema.User{
 		ID:        id,
 		Email:     email,
 		FirstName: firstName,

@@ -11,7 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
-	"github.com/cliffom/sst-bff-demo/src/models/user_model"
+	"github.com/cliffom/sst-bff-demo/src/schemas/user_schema"
 )
 
 // Handler is the main function that handles the request
@@ -44,7 +44,7 @@ func main() {
 	lambda.Start(handler)
 }
 
-func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescription) (*user_model.User, error) {
+func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescription) (*user_schema.User, error) {
 	id, ok := jwt.Claims["sub"]
 	if !ok {
 		return nil, errors.New("could not get userID from JWT claims")
@@ -65,7 +65,7 @@ func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescr
 		lastName = ""
 	}
 
-	return &user_model.User{
+	return &user_schema.User{
 		ID:        id,
 		Email:     email,
 		FirstName: firstName,
@@ -74,7 +74,7 @@ func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescr
 }
 
 func getUserByID(dbSvc dynamodbiface.DynamoDBAPI, id string) (events.APIGatewayProxyResponse, error) {
-	user, _ := user_model.GetUserByID(dbSvc, id)
+	user, _ := user_schema.GetUserByID(dbSvc, id)
 	u, err := json.Marshal(user)
 	if err != nil {
 		return response(http.StatusInternalServerError, ""), err
