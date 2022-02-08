@@ -13,8 +13,6 @@ import (
 )
 
 func Handler(ctx context.Context, dbSvc dynamodbiface.DynamoDBAPI, req events.CognitoEventUserPoolsPostConfirmation) (events.CognitoEventUserPoolsPostConfirmation, error) {
-	log.Printf("request: %v", req)
-
 	user, err := getUserFromEvent(&req.Request)
 	if err != nil {
 		log.Printf("could not get user from event: %v", err)
@@ -22,6 +20,8 @@ func Handler(ctx context.Context, dbSvc dynamodbiface.DynamoDBAPI, req events.Co
 
 	if err := createUser(dbSvc, *user); err != nil {
 		log.Printf("could not save user to table: %v", err)
+	} else {
+		log.Printf("successfully saved user to table")
 	}
 
 	return req, nil

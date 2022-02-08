@@ -19,14 +19,14 @@ export default class AuthStack extends sst.Stack {
     });
 
     // Create our async handlers
-    const usersHandler = new sst.Function(this, 'usersHandler', {
-      handler: 'src/handlers/async/users',
+    const postConfirmationHandler = new sst.Function(this, 'postConfirmationHandler', {
+      handler: 'src/handlers/async/cognito/post_confirm_user',
       environment: {
         TABLE_NAME: props?.table.dynamodbTable.tableName as string,
       },
     });
 
-    usersHandler.attachPermissions([props?.table as sst.Table]);
+    postConfirmationHandler.attachPermissions([props?.table as sst.Table]);
 
     // Create User Pool
     const userPool = new cognito.UserPool(this, 'UserPool', {
@@ -34,7 +34,7 @@ export default class AuthStack extends sst.Stack {
       signInAliases: {email: true},
       signInCaseSensitive: false,
       lambdaTriggers: {
-        postConfirmation: usersHandler,
+        postConfirmation: postConfirmationHandler,
       },
     });
 
