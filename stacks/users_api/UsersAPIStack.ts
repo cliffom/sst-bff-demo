@@ -21,19 +21,19 @@ export default class UsersAPIStack extends sst.Stack {
     const usersHandler = new sst.Function(this, 'usersHandler', {
       handler: 'src/handlers/api/users',
       environment: {
-        TABLE_NAME: props?.table.dynamodbTable.tableName as string,
+        TABLE_NAME: props!.table.dynamodbTable.tableName as string,
       },
     });
 
     // Create a HTTP API
     this.api = new sst.Api(this, 'Api', {
-      defaultAuthorizer: props?.authorizer,
+      defaultAuthorizer: props!.authorizer,
       defaultAuthorizationType: sst.ApiAuthorizationType.JWT,
       routes: {
         'GET /users/me': usersHandler,
       },
     });
 
-    this.api.attachPermissions([props?.table as sst.Table]);
+    this.api.attachPermissions([props!.table as sst.Table]);
   }
 }

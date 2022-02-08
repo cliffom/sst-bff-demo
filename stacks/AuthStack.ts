@@ -4,7 +4,7 @@ import * as sst from '@serverless-stack/resources';
 import {Duration} from 'aws-cdk-lib';
 
 interface AuthStackProps extends sst.StackProps {
-  readonly table: sst.Table;
+  readonly postConfirmationFunction: sst.Function;
 }
 
 export default class AuthStack extends sst.Stack {
@@ -13,28 +13,13 @@ export default class AuthStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props?: AuthStackProps) {
     super(scope, id, props);
 
-    // Let's Go!
-    this.setDefaultFunctionProps({
-      runtime: 'go1.x',
-    });
-
-    // Create our async handlers
-    const postConfirmationHandler = new sst.Function(this, 'postConfirmationHandler', {
-      handler: 'src/handlers/async/cognito/post_confirm_user',
-      environment: {
-        TABLE_NAME: props?.table.dynamodbTable.tableName as string,
-      },
-    });
-
-    postConfirmationHandler.attachPermissions([props?.table as sst.Table]);
-
     // Create User Pool
     const userPool = new cognito.UserPool(this, 'UserPool', {
       selfSignUpEnabled: true,
       signInAliases: {email: true},
       signInCaseSensitive: false,
       lambdaTriggers: {
-        postConfirmation: postConfirmationHandler,
+        postConfirmation: props!.postConfirmationFunction,
       },
     });
 

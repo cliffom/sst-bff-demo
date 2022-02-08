@@ -6,6 +6,7 @@ import TableStack from './TableStack';
 
 import TestAPIStack from './test_api/TestAPIStack';
 import UsersAPIStack from './users_api/UsersAPIStack';
+import UsersAsyncStack from './users_async/UsersAsyncStack';
 import ApolloStack from './ApolloStack';
 
 export default function main(app: sst.App): void {
@@ -18,9 +19,14 @@ export default function main(app: sst.App): void {
   // Create our single DynamoDB table
   const tableStack = new TableStack(app, 'table-stack');
 
+  // Create our Aynsc users stack
+  const usersAsyncStack = new UsersAsyncStack(app, 'users-async-stack', {
+    table: tableStack.table,
+  });
+
   // Create our Auth stack that defines our Cognito pool and client
   const authStack = new AuthStack(app, 'auth-stack', {
-    table: tableStack.table,
+    postConfirmationFunction: usersAsyncStack.createUserFunction,
   });
 
   // Create a simple, test API consisting of a single Lambda function
