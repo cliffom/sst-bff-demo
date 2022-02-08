@@ -19,8 +19,8 @@ export default function main(app: sst.App): void {
   // Create our single DynamoDB table
   const tableStack = new TableStack(app, 'table-stack');
 
-  // Create our Aynsc users stack
-  const usersTasksStack = new UserTasksStack(app, 'users-tasks-stack', {
+  // Create our user tasks stack
+  const usersTasksStack = new UserTasksStack(app, 'user-tasks-stack', {
     table: tableStack.table,
   });
 
