@@ -30,8 +30,8 @@ export default class UsersAPIStack extends sst.Stack {
       defaultAuthorizer: props?.authorizer,
       defaultAuthorizationType: sst.ApiAuthorizationType.JWT,
       routes: {
-        'POST /users': usersHandler,
         'GET /users/me': usersHandler,
+        'PATCH /users/me': usersHandler,
       },
     });
 

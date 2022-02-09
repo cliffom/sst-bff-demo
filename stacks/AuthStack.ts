@@ -3,10 +3,14 @@ import * as apigAuthorizers from '@aws-cdk/aws-apigatewayv2-authorizers-alpha';
 import * as sst from '@serverless-stack/resources';
 import {Duration} from 'aws-cdk-lib';
 
+interface AuthStackProps extends sst.StackProps {
+  readonly postConfirmationFunction: sst.Function;
+}
+
 export default class AuthStack extends sst.Stack {
   public readonly authorizer: apigAuthorizers.HttpUserPoolAuthorizer;
 
-  constructor(scope: sst.App, id: string, props?: sst.StackProps) {
+  constructor(scope: sst.App, id: string, props?: AuthStackProps) {
     super(scope, id, props);
 
     // Create User Pool
@@ -14,6 +18,9 @@ export default class AuthStack extends sst.Stack {
       selfSignUpEnabled: true,
       signInAliases: {email: true},
       signInCaseSensitive: false,
+      lambdaTriggers: {
+        postConfirmation: props?.postConfirmationFunction,
+      },
     });
 
     // Create User Pool Client

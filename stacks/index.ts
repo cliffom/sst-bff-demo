@@ -6,6 +6,7 @@ import TableStack from './TableStack';
 
 import TestAPIStack from './test_api/TestAPIStack';
 import UsersAPIStack from './users_api/UsersAPIStack';
+import UserTasksStack from './user_tasks/UserTasksStack';
 import ApolloStack from './ApolloStack';
 
 export default function main(app: sst.App): void {
@@ -15,11 +16,18 @@ export default function main(app: sst.App): void {
     app.setDefaultRemovalPolicy(RemovalPolicy.DESTROY);
   }
 
-  // Create our Auth stack that defines our Cognito pool and client
-  const authStack = new AuthStack(app, 'auth-stack');
-
   // Create our single DynamoDB table
   const tableStack = new TableStack(app, 'table-stack');
+
+  // Create our user tasks stack
+  const userTasksStack = new UserTasksStack(app, 'user-tasks-stack', {
+    table: tableStack.table,
+  });
+
+  // Create our Auth stack that defines our Cognito pool and client
+  const authStack = new AuthStack(app, 'auth-stack', {
+    postConfirmationFunction: userTasksStack.createUserFunction,
+  });
 
   // Create a simple, test API consisting of a single Lambda function
   // fronted with an API Gateway

@@ -11,7 +11,7 @@ export interface UserContext {
 
 export interface User {
   id?: string;
-  email: string;
+  email?: string;
   firstName: string;
   lastName: string;
   created?: string;
@@ -34,7 +34,7 @@ export default class UsersAPI extends RESTDataSource {
     return this.get(`${this.basePath}/me`);
   }
 
-  async createUser(): Promise<User> {
-    return this.post(this.basePath, {});
+  async updateUser(user: User): Promise<User> {
+    return this.patch(`${this.basePath}/me`, user);
   }
 }

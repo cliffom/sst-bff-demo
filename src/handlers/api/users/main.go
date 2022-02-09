@@ -11,6 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbiface"
+	"github.com/cliffom/sst-bff-demo/src/schemas/user_schema"
 )
 
 // Handler is the main function that handles the request
@@ -26,11 +27,12 @@ func Handler(ctx context.Context, dbSvc dynamodbiface.DynamoDBAPI, req events.AP
 	case http.MethodGet:
 		return getUserByID(dbSvc, userFromJWT.ID)
 
-	case http.MethodPost:
-		if err := json.Unmarshal([]byte(req.Body), &userFromJWT); err != nil {
-			return response(http.StatusInternalServerError, ""), err
-		}
-		return createUser(dbSvc, *userFromJWT)
+	case http.MethodPatch:
+		targetUser, _ := user_schema.GetUserByID(dbSvc, userFromJWT.ID)
+		var srcUser *user_schema.User
+		json.Unmarshal([]byte(req.Body), &srcUser)
+
+		return updateUser(dbSvc, targetUser, srcUser)
 	}
 
 	return response(http.StatusMethodNotAllowed, ""), nil
@@ -49,17 +51,7 @@ func main() {
 	lambda.Start(handler)
 }
 
-func createUser(dbSvc dynamodbiface.DynamoDBAPI, userToCreate User) (events.APIGatewayProxyResponse, error) {
-	if err := CreateUser(dbSvc, &userToCreate); err != nil {
-		errJSON, _ := json.Marshal(err)
-		return response(http.StatusConflict, string(errJSON)), nil
-	}
-
-	u, _ := json.Marshal(userToCreate)
-	return response(http.StatusCreated, string(u)), nil
-}
-
-func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescription) (*User, error) {
+func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescription) (*user_schema.User, error) {
 	id, ok := jwt.Claims["sub"]
 	if !ok {
 		return nil, errors.New("could not get userID from JWT claims")
@@ -80,7 +72,7 @@ func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescr
 		lastName = ""
 	}
 
-	return &User{
+	return &user_schema.User{
 		ID:        id,
 		Email:     email,
 		FirstName: firstName,
@@ -89,11 +81,29 @@ func getUserFromJWT(jwt *events.APIGatewayV2HTTPRequestContextAuthorizerJWTDescr
 }
 
 func getUserByID(dbSvc dynamodbiface.DynamoDBAPI, id string) (events.APIGatewayProxyResponse, error) {
-	user, _ := GetUserByID(dbSvc, id)
+	user, _ := user_schema.GetUserByID(dbSvc, id)
 	u, err := json.Marshal(user)
 	if err != nil {
 		return response(http.StatusInternalServerError, ""), err
 	}
+
+	return response(http.StatusOK, string(u)), nil
+}
+
+func updateUser(dbSvc dynamodbiface.DynamoDBAPI, targetUser, srcUser *user_schema.User) (events.APIGatewayProxyResponse, error) {
+	if len(srcUser.FirstName) > 0 {
+		targetUser.FirstName = srcUser.FirstName
+	}
+
+	if len(srcUser.LastName) > 0 {
+		targetUser.LastName = srcUser.LastName
+	}
+
+	if err := user_schema.UpdateUser(dbSvc, targetUser); err != nil {
+		return response(http.StatusInternalServerError, ""), err
+	}
+
+	u, _ := json.Marshal(targetUser)
 
 	return response(http.StatusOK, string(u)), nil
 }

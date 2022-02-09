@@ -1,15 +1,17 @@
 API_BASE_PATH=src/handlers/api
+SCHEMAS_BASE_PATH=src/schemas
 COGNITO_COMMAND=aws cognito-idp
 REGION ?= us-east-1
 
 .PHONY: test
 test:
-	cd $(API_BASE_PATH)/users && go test
+	cd $(SCHEMAS_BASE_PATH)/user_schema && go test
 
 # helper commands to manage users
 .PHONY: create-user
 create-user:
 	@$(COGNITO_COMMAND) sign-up \
+		--no-cli-pager \
 		--region $(REGION) \
 		--client-id $(CLIENT_ID) \
 		--username $(EMAIL) \
