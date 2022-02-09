@@ -34,11 +34,7 @@ export default class UsersAPI extends RESTDataSource {
     return this.get(`${this.basePath}/me`);
   }
 
-  async updateUser(firstName: string, lastName: string): Promise<User> {
-    const user: User = {
-      firstName,
-      lastName,
-    };
+  async updateUser(user: User): Promise<User> {
     return this.patch(`${this.basePath}/me`, user);
   }
 }

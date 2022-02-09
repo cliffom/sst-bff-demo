@@ -1,6 +1,11 @@
 import {Config, getConfig} from './config';
 import {UserContext, User} from './datasources/users';
 
+interface UpdateUserArgs {
+  firstName: string;
+  lastName: string;
+}
+
 const resolvers = {
   Query: {
     Config: (): Config => getConfig(),
@@ -8,8 +13,17 @@ const resolvers = {
       dataSources.usersAPI.getUser(),
   },
   Mutation: {
-    UpdateUser: async (_: unknown, args: any, {dataSources}: UserContext): Promise<User> =>
-      dataSources.usersAPI.updateUser(args.firstName, args.lastName),
+    UpdateUser: async (
+      _: unknown,
+      args: UpdateUserArgs,
+      {dataSources}: UserContext
+    ): Promise<User> => {
+      const user: User = {
+        firstName: args.firstName,
+        lastName: args.lastName,
+      };
+      return dataSources.usersAPI.updateUser(user);
+    },
   },
 };
 

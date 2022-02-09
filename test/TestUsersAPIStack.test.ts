@@ -20,10 +20,15 @@ test('Test UsersAPIStack', () => {
 
   // THEN
   template.resourceCountIs('AWS::Lambda::Function', 1);
-  template.resourceCountIs('AWS::ApiGatewayV2::Route', 1);
+  template.resourceCountIs('AWS::ApiGatewayV2::Route', 2);
 
   template.hasResourceProperties('AWS::ApiGatewayV2::Route', {
     RouteKey: 'GET /users/me',
+    AuthorizationType: 'JWT',
+  });
+
+  template.hasResourceProperties('AWS::ApiGatewayV2::Route', {
+    RouteKey: 'PATCH /users/me',
     AuthorizationType: 'JWT',
   });
 });
