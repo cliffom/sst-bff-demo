@@ -8,6 +8,7 @@ import TestAPIStack from './test_api/TestAPIStack';
 import UsersAPIStack from './users_api/UsersAPIStack';
 import UserTasksStack from './user_tasks/UserTasksStack';
 import ApolloStack from './ApolloStack';
+import SNSStack from './SNSStack';
 
 export default function main(app: sst.App): void {
   // Remove all resources when non-prod stages are removed
@@ -45,4 +46,8 @@ export default function main(app: sst.App): void {
   new ApolloStack(app, 'apollo-stack', {
     usersAPI: usersAPIStack.api,
   });
+
+  // Create the SNS Stack for demo purposes
+  /* eslint-disable-next-line no-new */
+  new SNSStack(app, 'sns-stack');
 }
