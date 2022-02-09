@@ -22,6 +22,10 @@ const typeDefs = gql`
   type Query {
     User: User
   }
+
+  type Mutation {
+    UpdateUser(firstName: String, lastName: String): User
+  }
 `;
 
 export default typeDefs;

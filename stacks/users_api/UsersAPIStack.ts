@@ -31,6 +31,7 @@ export default class UsersAPIStack extends sst.Stack {
       defaultAuthorizationType: sst.ApiAuthorizationType.JWT,
       routes: {
         'GET /users/me': usersHandler,
+        'PATCH /users/me': usersHandler,
       },
     });
 

@@ -26,6 +26,13 @@ func Handler(ctx context.Context, dbSvc dynamodbiface.DynamoDBAPI, req events.AP
 	switch httpMethod := req.RequestContext.HTTP.Method; httpMethod {
 	case http.MethodGet:
 		return getUserByID(dbSvc, userFromJWT.ID)
+
+	case http.MethodPatch:
+		targetUser, _ := user_schema.GetUserByID(dbSvc, userFromJWT.ID)
+		var srcUser *user_schema.User
+		json.Unmarshal([]byte(req.Body), &srcUser)
+
+		return updateUser(dbSvc, targetUser, srcUser)
 	}
 
 	return response(http.StatusMethodNotAllowed, ""), nil
@@ -79,6 +86,24 @@ func getUserByID(dbSvc dynamodbiface.DynamoDBAPI, id string) (events.APIGatewayP
 	if err != nil {
 		return response(http.StatusInternalServerError, ""), err
 	}
+
+	return response(http.StatusOK, string(u)), nil
+}
+
+func updateUser(dbSvc dynamodbiface.DynamoDBAPI, targetUser, srcUser *user_schema.User) (events.APIGatewayProxyResponse, error) {
+	if len(srcUser.FirstName) > 0 {
+		targetUser.FirstName = srcUser.FirstName
+	}
+
+	if len(srcUser.LastName) > 0 {
+		targetUser.LastName = srcUser.LastName
+	}
+
+	if err := user_schema.UpdateUser(dbSvc, targetUser); err != nil {
+		return response(http.StatusInternalServerError, ""), err
+	}
+
+	u, _ := json.Marshal(targetUser)
 
 	return response(http.StatusOK, string(u)), nil
 }
