@@ -13,7 +13,7 @@ export default class ApolloStack extends sst.Stack {
     });
 
     // Create the Apollo GraphQL API
-    const apollo = new sst.ApolloApi(this, 'ApolloApi', {
+    const apollo = new sst.GraphQLApi(this, 'ApolloApi', {
       server: new sst.Function(this, 'ApolloLambda', {
         handler: 'src/handlers/apollo/lambda.handler',
         environment: {

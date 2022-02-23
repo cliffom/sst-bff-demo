@@ -2474,10 +2474,10 @@
     node-addon-api "3.2.1"
     node-gyp "8.1.0"
 
-"@serverless-stack/cli@0.64.1":
-  version "0.64.1"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.64.1.tgz#266faaaa9a767f2b0de246ad7a064d178660220c"
-  integrity sha512-JUABc+4deCpL6lUrwHvKPH4s9IWSMHy1S+3x1dVlJ1+yn1YEVlBCVMFb3uHU+f5uXtgowll0fbM6fXHQMFaw+g==
+"@serverless-stack/cli@0.65.1":
+  version "0.65.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/cli/-/cli-0.65.1.tgz#4573ef1c2b072be724c44a52bf3333853f14f2b6"
+  integrity sha512-GowGXWEoxSGzFU5FzGIKk6iyE3e81wcO9PNDve3WAZnQaS9TM81Gr3J/oVoLjuIevK/Bsoyv5b5UPdej8W1g7w==
   dependencies:
     "@aws-cdk/aws-apigatewayv2-alpha" "2.7.0-alpha.0"
     "@babel/core" "^7.10.5"
@@ -2486,8 +2486,8 @@
     "@babel/plugin-proposal-class-properties" "^7.10.4"
     "@babel/preset-env" "^7.10.4"
     "@serverless-stack/aws-lambda-ric" "^2.0.12"
-    "@serverless-stack/core" "^0.64.1"
-    "@serverless-stack/resources" "^0.64.1"
+    "@serverless-stack/core" "^0.65.1"
+    "@serverless-stack/resources" "^0.65.1"
     "@types/jest" "^27.0.2"
     "@types/node" "^14.0.27"
     "@typescript-eslint/eslint-plugin" "^4.15.1"
@@ -2505,7 +2505,7 @@
     esbuild "^0.12.20"
     esbuild-runner "^2.2.1"
     eslint "^7.16.0"
-    eslint-config-serverless-stack "^0.64.1"
+    eslint-config-serverless-stack "^0.65.1"
     express "^4.17.1"
     fast-safe-stringify "^2.0.6"
     fs-extra "^9.0.1"
@@ -2523,10 +2523,10 @@
     ws "^7.4.0"
     yargs "^15.4.1"
 
-"@serverless-stack/core@^0.64.1":
-  version "0.64.1"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.64.1.tgz#15afb8ca5cb35bf0319b2b876d02fa5bdf597577"
-  integrity sha512-enVSFEEZEZvjNLp9pqDbLkLHm+loasbd9G+ON4khReiMgCQOE0cX3YC90/6xfb3oSFKgvc3h4y9CI/ea8Bu/pQ==
+"@serverless-stack/core@^0.65.1":
+  version "0.65.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/core/-/core-0.65.1.tgz#6298157f0452446cd0a467d463be049a673cdfe1"
+  integrity sha512-eGvLKFH6CP1vUo2NBXX9nafBl7BfUBz5rK9uDNVx+TDrBTJ0TrgXN1H5cThPwSpbz8Swju9Iv2ibJBKaRanvRA==
   dependencies:
     "@aws-sdk/client-s3" "^3.45.0"
     "@trpc/server" "^9.16.0"
@@ -2562,10 +2562,10 @@
     xstate "4.26.1"
     zod "^3.11.6"
 
-"@serverless-stack/resources@0.64.1", "@serverless-stack/resources@^0.64.1":
-  version "0.64.1"
-  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.64.1.tgz#b050fc00ce5d85eec8d955ddce136b7eb4f6545c"
-  integrity sha512-VVhkDPPYTvhYQkqv7deq/9b5Qvto/J4sBdJuSG8nDo1PMfsrQza95Tb/KiDe13uARBy9i5IV23dFh/U+MMAfgQ==
+"@serverless-stack/resources@0.65.1", "@serverless-stack/resources@^0.65.1":
+  version "0.65.1"
+  resolved "https://registry.yarnpkg.com/@serverless-stack/resources/-/resources-0.65.1.tgz#403be957f09fc3951867a7e0d9972be62fa0cf2a"
+  integrity sha512-VfX8j9HqdPXOTyKnTmnIL9oOb1lXRpmNCdxD00i2XeOSF0gQGcF6rifKHRZMgr/5fEpMcqls+JtW53cDW0jprA==
   dependencies:
     "@aws-cdk/aws-apigatewayv2-alpha" "2.7.0-alpha.0"
     "@aws-cdk/aws-apigatewayv2-authorizers-alpha" "2.7.0-alpha.0"
@@ -2573,7 +2573,7 @@
     "@aws-cdk/aws-appsync-alpha" "2.7.0-alpha.0"
     "@graphql-tools/load-files" "^6.3.2"
     "@graphql-tools/merge" "^6.2.14"
-    "@serverless-stack/core" "^0.64.1"
+    "@serverless-stack/core" "^0.65.1"
     "@types/jest" "^26.0.7"
     archiver "^5.3.0"
     aws-cdk-lib "2.7.0"
@@ -5157,10 +5157,10 @@ eslint-config-prettier@^8.3.0:
   resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.3.0.tgz#f7471b20b6fe8a9a9254cc684454202886a2dd7a"
   integrity sha512-BgZuLUSeKzvlL/VUjx/Yb787VQ26RU3gGjA3iiFvdsp/2bMfVIWUVP7tjxtjS0e+HP409cPlPvNkQloz8C91ew==
 
-eslint-config-serverless-stack@^0.64.1:
-  version "0.64.1"
-  resolved "https://registry.yarnpkg.com/eslint-config-serverless-stack/-/eslint-config-serverless-stack-0.64.1.tgz#b5f60b8269111c7aa0f87769f8fe1abbbc217b71"
-  integrity sha512-hTCZweH4+1JGBv3/YInTL+tMWHdHuPA9t5ieXjaNX4v36aqZvDAzK4Iw3HyZ96fbq53VCGhtgEzn4glSid4Zag==
+eslint-config-serverless-stack@^0.65.1:
+  version "0.65.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-serverless-stack/-/eslint-config-serverless-stack-0.65.1.tgz#4e1a99ff032a1da97ce6728d15e9c75d82993021"
+  integrity sha512-3YuAvRsZUWJErGFY8/OKIgaHtNsVmtXnLqz06sjJmNjUHMydItRjCOhARdQ3NX9J8NZJw060aUczC5ALujI8wg==
   dependencies:
     "@babel/eslint-parser" "^7.11.3"
     "@babel/plugin-proposal-class-properties" "^7.10.4"
