@@ -19,14 +19,9 @@ export default function main(app: sst.App): void {
   // Create our single DynamoDB table
   const tableStack = new TableStack(app, 'table-stack');
 
-  // Create our user tasks stack
-  const userTasksStack = new UserTasksStack(app, 'user-tasks-stack', {
-    table: tableStack.table,
-  });
-
   // Create our Auth stack that defines our Cognito pool and client
   const authStack = new AuthStack(app, 'auth-stack', {
-    postConfirmationFunction: userTasksStack.createUserFunction,
+    table: tableStack.table,
   });
 
   // Create a simple, test API consisting of a single Lambda function
